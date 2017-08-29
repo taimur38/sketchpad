@@ -26,9 +26,17 @@ export default class Cube extends Component {
 		this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
+		window.onresize = this.windowResize;
 
 		document.querySelector("#container").appendChild(this.renderer.domElement);
 		this.animate();
+
+	}
+
+	windowResize = () => {
+		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.camera.aspect = window.innerWidth / window.innerHeight;
+		this.camera.updateProjectionMatrix();
 	}
 
 	animate = () => {
