@@ -18,12 +18,12 @@ export default class MaterialTest extends Component {
 		const lights = [
 			new THREE.PointLight (0xffffff, 1, 0),
 			new THREE.PointLight (0xffffff, 1, 0),
-			//new THREE.PointLight (0xffffff, 1, 0)
+			new THREE.PointLight (0xffffff, 1, 0)
 		]
 
 		lights[0].position.set(500, 800, 0);
 		lights[1].position.set(800, 500, 0);
-		//lights[2].position.set(0, 0, 800);
+		lights[2].position.set(0, 0, 800);
 		lights.forEach(l => this.scene.add(l));
 		//this.scene.add(light);
 
