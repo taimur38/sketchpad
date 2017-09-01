@@ -24,7 +24,7 @@ export default class MetaBalls extends Component {
 		this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-		const geometry = new THREE.PlaneBufferGeometry(400, 400, 300, 400);
+		const geometry = new THREE.PlaneBufferGeometry(400, 600, 300, 400);
 		const material = new THREE.ShaderMaterial({
 			vertexShader: planevert,
 			fragmentShader: planefrag,
