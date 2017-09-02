@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import * as THREE from 'three'
 
-export default class MaterialTest extends Component {
+import { makeTexture } from '../../helpers'
 
-	constructor(props) {
-		super(props);
-	}
+import matte_noise from './matte_noise.png'
+
+export default class MaterialTest extends Component {
 
 	componentDidMount() {
 
@@ -13,7 +13,8 @@ export default class MaterialTest extends Component {
 		this.camera.position.z = 400;
 
 		this.scene = new THREE.Scene();
-		this.scene.background = new THREE.Color(0xFF8DA3)
+		//this.scene.background = new THREE.Color(0xFF8DA3)
+		this.scene.background = new THREE.Color(0x0A0A0A)
 
 		const lights = [
 			new THREE.PointLight (0xffffff, 1, 0),
@@ -32,9 +33,10 @@ export default class MaterialTest extends Component {
 		const geometry2 = new THREE.BoxBufferGeometry(100, 200, 100);
 
 		const material = new THREE.MeshPhongMaterial({
-			color: "#47FFFF",
+			//color: "#47FFFF",
+			color: "#111111",
 			shininess: 75,
-			specular: 0x67FFFF,
+			//specular: 0x67FFFF,
 			reflectivity: 100
 		});
 
@@ -42,9 +44,20 @@ export default class MaterialTest extends Component {
 		this.mesh.position.x = 175;
 		this.scene.add(this.mesh);
 
+		const matte_tex = makeTexture(matte_noise);
+		matte_tex.magFilter = THREE.NearestFilter;
+
+		const a_tex = makeTexture(matte_noise);
+		a_tex.magFilter = THREE.NearestFilter;
+
+
 		const lambertMaterial = new THREE.MeshLambertMaterial({
-			color: "#47FFFF",
-			reflectivity: 0
+			//color: "#47FFFF",
+			color: "#111111",
+			reflectivity: 0,
+			//map: matte_tex,
+			alphaMap: a_tex,
+			transparent: false,
 		});
 
 		this.other_mesh = new THREE.Mesh(geometry2, lambertMaterial);
@@ -53,7 +66,7 @@ export default class MaterialTest extends Component {
 
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setPixelRatio( window.devicePixelRatio );
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.setSize(window.innerWidth - 0, window.innerHeight - 0);
 
 		window.onresize = this.windowResize;
 
@@ -63,7 +76,7 @@ export default class MaterialTest extends Component {
 	}
 
 	windowResize = () => {
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.setSize(window.innerWidth - 4, window.innerHeight - 4);
 		this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.camera.updateProjectionMatrix();
 	}
@@ -81,6 +94,6 @@ export default class MaterialTest extends Component {
 	}
 
 	render() {
-		return <div id="container" />
+		return <div id="container" style={{overflow: "hidden"}}/>
 	}
 }
