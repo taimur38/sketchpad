@@ -6,8 +6,6 @@ import planevert from '!raw-loader!./shaders/plane.vert'
 import planefrag from '!raw-loader!./shaders/plane.frag'
 
 let ticks = 0;
-let mouseX = 0;
-let mouseY = 0;
 
 export default class MetaBalls extends Component {
 

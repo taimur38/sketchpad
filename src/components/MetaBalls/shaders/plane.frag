@@ -22,7 +22,13 @@ void main () {
 
 	float R = 0.2;
 
+
 	float meta_score = (R / d1 + R / d2) / 2.0;
+
+	float g_modifier = (R / d1) / meta_score;
+
+	g_modifier = float(int(g_modifier * 10.0)) / 10.0;
+
 
 	if(meta_score < 0.5){
 		meta_score = 0.0;
