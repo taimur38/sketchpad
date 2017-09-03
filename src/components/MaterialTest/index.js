@@ -13,8 +13,8 @@ export default class MaterialTest extends Component {
 		this.camera.position.z = 400;
 
 		this.scene = new THREE.Scene();
-		//this.scene.background = new THREE.Color(0xFF8DA3)
-		this.scene.background = new THREE.Color(0x0A0A0A)
+		this.scene.background = new THREE.Color(0xFF8DA3)
+		//this.scene.background = new THREE.Color(0x0A0A0A)
 
 		const lights = [
 			new THREE.PointLight (0xffffff, 1, 0),
@@ -33,8 +33,8 @@ export default class MaterialTest extends Component {
 		const geometry2 = new THREE.BoxBufferGeometry(100, 200, 100);
 
 		const material = new THREE.MeshPhongMaterial({
-			//color: "#47FFFF",
-			color: "#111111",
+			color: "#47FFFF",
+			//color: "#111111",
 			shininess: 75,
 			//specular: 0x67FFFF,
 			reflectivity: 100
@@ -52,8 +52,8 @@ export default class MaterialTest extends Component {
 
 
 		const lambertMaterial = new THREE.MeshLambertMaterial({
-			//color: "#47FFFF",
-			color: "#111111",
+			color: "#47FFFF",
+			//color: "#111111",
 			reflectivity: 0,
 			//map: matte_tex,
 			alphaMap: a_tex,
