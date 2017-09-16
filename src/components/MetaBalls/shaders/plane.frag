@@ -13,22 +13,29 @@ uniform vec3 cameraPosition;
 
 uniform float ticks;
 uniform vec2 mouse;
+uniform vec2 left_hand;
+uniform vec2 head;
 
 varying vec2 _position;
 
 float compute_meta_score(vec3 pos) {
-	vec3 center_1 = vec3((sin(ticks/50.0) + 1.0)/2.0, 0.25, 0.0);
+	vec3 center_1 = vec3((sin(ticks/75.0) + 1.0)/2.0, 0.25, 0.0);
 
-	//vec2 center_2 = vec2(0.25, (sin(ticks/25.0) + 1.0)/2.0);
+	//vec3 center_2 = vec3(0.25, (sin(ticks/50.0) + 1.0)/2.0, 0.0);
 	vec3 center_2 = vec3(mouse, 0.0);
+
+	vec3 center_3 = vec3(left_hand, 0.0);
+	vec3 center_4 = vec3(head, 0.0);
 
 	float d1 = distance(pos, center_1);
 	float d2 = distance(pos, center_2);
+	float d3 = distance(pos, center_3);
+	float d4 = distance(pos, center_4);
 
+	float R1 = 0.2;
+	float R2 = 0.1;
 
-	float R = 0.2;
-
-	float meta_score = (R / d1 + R / d2) / 2.0;
+	float meta_score = (R1 / d1 + R2 / d2 + R2 / d3 + R2 / d4) / 3.0;
 
 	return meta_score;
 
@@ -48,6 +55,7 @@ void main () {
 	// max z value is 100
 	//const float step_size = 0.001;
 	/*
+	nothere
 	const float step_size = 1.0;
 	for(float i = -100.0; i < 100.0; i += step_size) {
 		// check strength at coord (_position.x, _position.y, i)
