@@ -9,15 +9,23 @@ let ticks = 0;
 
 export default class MetaBalls extends Component {
 
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			kinect: false
+		}
+	}
+
 	on_msg = (msg) => {
 
 		try {
 			const parsed = JSON.parse(msg.data);
 			//console.log(parsed.bodies)
 
-			const hand = parsed.bodies[0].joints.find(j => j.type == "HandRight");
-			const left_hand = parsed.bodies[0].joints.find(j => j.type == "HandLeft");
-			const head = parsed.bodies[0].joints.find(j => j.type == "Head")
+			const hand = parsed.bodies[0].joints.find(j => j.type === "HandRight");
+			const left_hand = parsed.bodies[0].joints.find(j => j.type === "HandLeft");
+			const head = parsed.bodies[0].joints.find(j => j.type === "Head")
 
 
 			//console.log(hand.x, hand.y, hand.z, hand.trackingState);
@@ -45,6 +53,17 @@ export default class MetaBalls extends Component {
 
 		this.ws = new WebSocket("ws://192.168.0.15:8181/kinect");
 		this.ws.onmessage = this.on_msg;
+		this.ws.onopen = () => {
+			this.setState({ kinect: true });
+			this.plane.material.uniforms.kinect.value = 1;
+
+		}
+		this.ws.onerror = err => {
+
+			this.setState({
+				kinect: false 
+			})
+		}
 
 		this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 		this.camera.position.z = 400;
@@ -77,6 +96,9 @@ export default class MetaBalls extends Component {
 				},
 				head: {
 					value: this.head
+				},
+				kinect: {
+					value: this.state.kinect ? 1 : 0
 				}
 			}
 		})
@@ -100,10 +122,10 @@ export default class MetaBalls extends Component {
 	}
 
 	mouseMove = e => {
-		/*
-		this.mouse.x = (e.clientX / window.innerWidth); 
-		this.mouse.y = 1 - (e.clientY / window.innerHeight);
-		*/
+		if(!this.state.kinect) {
+			this.mouse.x = (e.clientX / window.innerWidth); 
+			this.mouse.y = 1 - (e.clientY / window.innerHeight);
+		}
 	}
 
 	animate = () => {

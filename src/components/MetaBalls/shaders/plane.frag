@@ -15,17 +15,21 @@ uniform float ticks;
 uniform vec2 mouse;
 uniform vec2 left_hand;
 uniform vec2 head;
+uniform float kinect;
 
 varying vec2 _position;
 
 float compute_meta_score(vec3 pos) {
 	vec3 center_1 = vec3((sin(ticks/75.0) + 1.0)/2.0, 0.25, 0.0);
 
-	//vec3 center_2 = vec3(0.25, (sin(ticks/50.0) + 1.0)/2.0, 0.0);
 	vec3 center_2 = vec3(mouse, 0.0);
 
-	vec3 center_3 = vec3(left_hand, 0.0);
-	vec3 center_4 = vec3(head, 0.0);
+	vec3 center_3 = vec3(0.25, (sin(ticks/50.0) + 1.0)/2.0, 0.0);
+	vec3 center_4 = vec3((cos(ticks/75.0) + 1.0)/2.0, (sin(ticks/40.0) + 1.0)/2.0, 0.0);
+	if(kinect == 1.0) {
+		center_3 = vec3(left_hand, 0.0);
+		center_4 = vec3(head, 0.0);
+	}
 
 	float d1 = distance(pos, center_1);
 	float d2 = distance(pos, center_2);
