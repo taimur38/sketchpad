@@ -10,6 +10,7 @@ class App extends Component {
 				<div><Link to="/material">Material</Link></div>
 				<div><Link to="/cube">Cube</Link></div>
 				<div><Link to="/metaball">Metaball</Link></div>
+				<div><Link to="/waves">Waves</Link></div>
 			</div>
 		);
 	}
