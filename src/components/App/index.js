@@ -7,10 +7,10 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<div><Link to="/material">Material</Link></div>
-				<div><Link to="/cube">Cube</Link></div>
-				<div><Link to="/metaball">Metaball</Link></div>
-				<div><Link to="/waves">Waves</Link></div>
+				<Link to="/material">Material</Link>
+				<Link to="/cube">Cube</Link>
+				<Link to="/metaball">Metaball</Link>
+				<Link to="/waves">Waves</Link>
 			</div>
 		);
 	}
