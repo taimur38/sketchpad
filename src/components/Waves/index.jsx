@@ -20,13 +20,19 @@ export default class Waves extends Component {
 		this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-		const geometry = new THREE.PlaneBufferGeometry(800, 600, 8, 8);
+		const geometry = new THREE.PlaneBufferGeometry(1200, 1200, 10, 10);
 		const material = new THREE.ShaderMaterial({
 			vertexShader: planevert,
 			fragmentShader: planefrag,
 			uniforms: {
 				time: {
 					value: Date.now()
+				},
+				color1: {
+					value: new THREE.Color("#6E2264")
+				},
+				color2: {
+					value: new THREE.Color("#CC4D33")
 				}
 			}
 		})

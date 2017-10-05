@@ -15,15 +15,25 @@ uniform float time;
 varying vec3 _position;
 varying vec3 _normal;
 
+float toy(float x) {
+
+	float height = sin((position.x * position.x + position.y + (x/ 10.0))/ 100.0) * 50.0;
+	return height;
+
+}
 void main() {
 
+	float height = toy(time);
+	float future_height = toy(time + 1000.0/60.0);
+	/*
 	float height = sin((position.x * position.x + position.y + (time / 10.0))/ 100.0) * 50.0;
 
 	float future_height = sin((position.x * position.x + position.y + ((time + 1.0) / 10.0))/ 100.0) * 50.0;
+	*/
 
 	_position = vec3(position.xy, height);
 
-	if(future_height > 0.0) {
+	if(future_height - height > 0.0) {
 		_normal = vec3(1.0, 0.0, 0.0);
 	}
 	else {
