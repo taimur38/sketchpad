@@ -15,7 +15,7 @@ void main () {
 	gl_FragColor = vec4(col, col, col, 1.0);
 	*/
 
-	float m_pert = 50.0;
+	float m_pert = 100.0;
 	float col = (_position.z + m_pert) / (2.0 * m_pert);
 
 	vec3 interpolated = col * color1 + (1.0-col) * color2;

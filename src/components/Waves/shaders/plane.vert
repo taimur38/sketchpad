@@ -21,10 +21,16 @@ float toy(float x) {
 	return height;
 
 }
+
+float simple(float x) {
+	float height = sin((position.x + position.y + (x/ 10.0))/ 100.0) * 100.0;
+	return height;
+}
+
 void main() {
 
-	float height = toy(time);
-	float future_height = toy(time + 1000.0/60.0);
+	float height = simple(time);
+	float future_height = simple(time + 1000.0/60.0);
 	/*
 	float height = sin((position.x * position.x + position.y + (time / 10.0))/ 100.0) * 50.0;
 
