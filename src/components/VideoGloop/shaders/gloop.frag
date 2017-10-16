@@ -1,15 +1,17 @@
 
 uniform sampler2D tex;
 uniform float time;
+uniform float mode;
+uniform vec2 c1;
+uniform vec2 c2;
+uniform vec2 c3;
+uniform vec2 c4;
+
+uniform float R1;
 
 varying vec2 _position;
 
 void main() {
-
-	vec2 c1 = vec2((sin(time/1000.0) + 1.0)/2.0, (cos(time/1000.0 + 3.14/2.0) + 1.0)/2.0);
-	vec2 c2 = vec2((sin(time/1000.0 + 3.14/2.0) + 1.0)/2.0, (cos(time/500.0) + 1.0)/2.0);
-	vec2 c3 = vec2((sin(time/1000.0 + 3.14) + 1.0)/2.0, (tan(time/1000.0) + 1.0)/2.0);
-	vec2 c4 = vec2((sin(time/750.0 + 3.14/2.0) + 1.0)/2.0, (sin(time/1000.0 + 3.14/2.0) + 1.0)/2.0);
 
 	vec3 bg = vec3(195.0/255.0, 164.0/255.0, 125.0/255.0);
 
@@ -17,8 +19,6 @@ void main() {
 	float d2 = distance(c2, _position);
 	float d3 = distance(c3, _position);
 	float d4 = distance(c4, _position);
-
-	float R1 = 0.25;
 
 	float meta_score = (R1/d1 + R1/d2 + R1/d3 + R1/d4) /4.0;
 
@@ -40,7 +40,12 @@ void main() {
 		vec4 col = texture2D(tex, _position);
 
 		if(h > 0.8) {
-			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			if(mode == 0.0) {
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			}
+			else if(mode == 1.0) {
+				gl_FragColor = vec4(bg, 1.0);
+			}
 		}
 		else {
 			gl_FragColor = col;

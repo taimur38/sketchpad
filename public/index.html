@@ -27,12 +27,15 @@
 	</noscript>
 	<script>
 		window.onload = function() {
-			console.log('loaded')
+
+			function requestFs() {
+				var f = (elem.requestFullscreen || elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullScreen).bind(elem);
+				f();
+			}
+
 			var elem = document.getElementById("root");
-			var f = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.mozRequestFullScreen || ms.requestFullscreen;
-			console.log(f)
-			//f();
-			elem.webkitRequestFullscreen();
+			elem.onclick = requestFs;
+			elem.ontouchstart = requestFs;
 		}
 	</script>
     <div id="root"></div>
