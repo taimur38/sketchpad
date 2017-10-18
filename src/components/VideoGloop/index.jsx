@@ -172,6 +172,18 @@ export default class VideoGloop extends Component {
 		if(e.key == "1") {
 			this.mode = 1;
 		}
+		if(e.key == "2") {
+			this.mode = 2;
+		}
+		if(e.key == "3") {
+			this.mode = 3;
+		}
+		if(e.key == "4") {
+			this.mode = 4;
+		}
+		if(e.key == "5") {
+			this.mode = 5;
+		}
 
 	}
 

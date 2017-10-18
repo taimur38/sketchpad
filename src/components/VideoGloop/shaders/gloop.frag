@@ -32,19 +32,24 @@ void main() {
 		gl_FragColor = texture2D(tex, _position);
 	}
 	else {
-		gl_FragColor = texture2D(tex, _position);
+		vec4 current = texture2D(tex, _position);
+		gl_FragColor = current;
 
 		float _d = min(min(d1, d2), min(d3, d4));
 
 		float h = (sin(time/700.0 + _d) + 1.0)/2.0;
 		vec4 col = texture2D(tex, _position);
 
-		if(h > 0.8) {
+		if(h > 0.2) {
 			if(mode == 0.0) {
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 			}
-			else if(mode == 1.0) {
+			if(mode == 1.0) {
 				gl_FragColor = vec4(bg, 1.0);
+			}
+			if(mode == 2.0) {
+				vec2 p = vec2( float(int(_position.x * 100.0))/100.0, float(int(_position.y * 100.0))/100.0);
+				gl_FragColor = 0.7 * texture2D(tex, p);
 			}
 		}
 		else {
