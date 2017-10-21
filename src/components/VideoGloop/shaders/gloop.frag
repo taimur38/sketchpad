@@ -8,6 +8,7 @@ uniform vec2 c3;
 uniform vec2 c4;
 
 uniform float R1;
+uniform float mode_time;
 
 varying vec2 _position;
 
@@ -53,7 +54,9 @@ void main() {
 				}
 				else {
 					vec2 p;
-					float m = meta_score * 30.0;
+					float max_m = 1000.0;
+					//float m = clamp(mode_time/5000.0, 0.0, 1.0) * meta_score * (max_m - clamp(mode_time, 0.0, max_m - 30.0));
+					float m = clamp(mode_time/5000.0, 0.0, 1.0) * meta_score * 30.0;
 					p.x = float(int(_position.x * m))/m;
 					p.y = float(int(_position.y * m))/m;
 					gl_FragColor = texture2D(tex, p);

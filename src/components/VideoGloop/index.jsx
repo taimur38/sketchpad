@@ -39,6 +39,7 @@ export default class VideoGloop extends Component {
 		this.mode = 0;
 		this.R1 = 0.25;
 		this.speed = 1;
+		this.mode_time = 0;
 
 		return {
 			video,
@@ -92,6 +93,9 @@ export default class VideoGloop extends Component {
 				},
 				R1: {
 					value: this.R1
+				},
+				mode_time: {
+					value: this.mode_time
 				}
 			}
 		})
@@ -114,6 +118,7 @@ export default class VideoGloop extends Component {
 		this.videoAssets.canvas.getContext('2d').drawImage(this.videoAssets.video, 0, 0, 1024, 1024);
 		this.videoAssets.texture.needsUpdate = true;
 		this.mesh.material.uniforms.time.value = t;
+		this.mesh.material.uniforms.mode_time.value = Date.now() - this.mode_time;
 		this.mesh.material.uniforms.time.needsUpdate = true;
 
 		this.mesh.material.uniforms.c1.value.x = (Math.sin(t/(this.speed * 1000)) + 1)/2;
@@ -168,21 +173,27 @@ export default class VideoGloop extends Component {
 
 		if(e.key == "0") {
 			this.mode = 0
+			this.mode_time = Date.now();
 		}
 		if(e.key == "1") {
 			this.mode = 1;
+			this.mode_time = Date.now();
 		}
 		if(e.key == "2") {
 			this.mode = 2;
+			this.mode_time = Date.now();
 		}
 		if(e.key == "3") {
 			this.mode = 3;
+			this.mode_time = Date.now();
 		}
 		if(e.key == "4") {
 			this.mode = 4;
+			this.mode_time = Date.now();
 		}
 		if(e.key == "5") {
 			this.mode = 5;
+			this.mode_time = Date.now();
 		}
 
 	}
