@@ -55,7 +55,12 @@ void main() {
 				gl_FragColor = 0.5 * texture2D(tex, p);
 			}
 			if(mode == 3.0) {
-				gl_FragColor = texture2D(tex, _position, clamp(meta_score * 8.0, 0.0, 10.0));
+				if(meta_score > 0.49 && meta_score < 0.5) {
+					gl_FragColor = 0.5 * texture2D(tex, _position);
+				}
+				else {
+					gl_FragColor = texture2D(tex, _position, clamp((meta_score > 0.5 ? meta_score : 0.0) * 8.0, 0.0, 5.0));
+				}
 			}
 		}
 		else {
