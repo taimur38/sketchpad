@@ -26,7 +26,7 @@ void main() {
 	if(meta_score > 0.5 && meta_score < 0.5) {
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 	}
-	else if(meta_score < 0.5 && mode != 3.0) {
+	else if(meta_score < 0.5 && mode != 9.0) {
 		gl_FragColor = vec4(bg, 1.0);
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 
@@ -55,7 +55,6 @@ void main() {
 				else {
 					vec2 p;
 					float max_m = 1000.0;
-					//float m = clamp(mode_time/5000.0, 0.0, 1.0) * meta_score * (max_m - clamp(mode_time, 0.0, max_m - 30.0));
 					float m = clamp(mode_time/5000.0, 0.0, 1.0) * meta_score * 30.0;
 					p.x = float(int(_position.x * m))/m;
 					p.y = float(int(_position.y * m))/m;
@@ -67,7 +66,9 @@ void main() {
 					gl_FragColor = 0.5 * texture2D(tex, _position);
 				}
 				else {
-					gl_FragColor = texture2D(tex, _position, clamp((meta_score > 0.5 ? meta_score : 0.0) * 8.0, 0.0, 5.0));
+					float m = clamp(mode_time/1000.0, 0.0, 1.0) * meta_score;
+
+					gl_FragColor = texture2D(tex, _position, clamp(m * 8.0, 0.0, 10.0));
 				}
 			}
 		}
