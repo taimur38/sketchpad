@@ -48,14 +48,19 @@ void main() {
 				gl_FragColor = vec4(bg, 1.0);
 			}
 			if(mode == 2.0) {
-				vec2 p;
-				float m = meta_score * 30.0;
-				p.x = float(int(_position.x * m))/m;
-				p.y = float(int(_position.y * m))/m;
-				gl_FragColor = 0.5 * texture2D(tex, p);
+				if(meta_score > 0.5 && meta_score < 0.51) {
+					gl_FragColor = 0.5 * texture2D(tex, _position);
+				}
+				else {
+					vec2 p;
+					float m = meta_score * 30.0;
+					p.x = float(int(_position.x * m))/m;
+					p.y = float(int(_position.y * m))/m;
+					gl_FragColor = texture2D(tex, p);
+				}
 			}
 			if(mode == 3.0) {
-				if(meta_score > 0.49 && meta_score < 0.5) {
+				if(meta_score > 0.5 && meta_score < 0.51) {
 					gl_FragColor = 0.5 * texture2D(tex, _position);
 				}
 				else {
