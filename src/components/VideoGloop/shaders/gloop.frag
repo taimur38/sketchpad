@@ -25,7 +25,7 @@ void main() {
 	if(meta_score > 0.5 && meta_score < 0.5) {
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 	}
-	else if(meta_score < 0.5) {
+	else if(meta_score < 0.5 && mode != 3.0) {
 		gl_FragColor = vec4(bg, 1.0);
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 
@@ -53,6 +53,9 @@ void main() {
 				p.x = float(int(_position.x * m))/m;
 				p.y = float(int(_position.y * m))/m;
 				gl_FragColor = 0.5 * texture2D(tex, p);
+			}
+			if(mode == 3.0) {
+				gl_FragColor = texture2D(tex, _position, clamp(meta_score * 8.0, 0.0, 10.0));
 			}
 		}
 		else {
