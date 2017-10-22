@@ -40,6 +40,15 @@ export default class VideoGloop extends Component {
 		this.R1 = 0.25;
 		this.speed = 1;
 		this.mode_time = 0;
+		this.stop = false;
+		this.chorus = 0.0;
+		this.crazy = 0.0;
+
+		this.crazyrands = [];
+
+		for(let i = 0; i < 15; i++) {
+			this.crazyrands.push([Math.random(), Math.random(), Math.random(), Math.random()]);
+		}
 
 		return {
 			video,
@@ -91,6 +100,38 @@ export default class VideoGloop extends Component {
 				c4: {
 					value: new THREE.Vector2(.5, .5)
 				},
+				cs: {
+					type: 'v2v',
+					value: [ new THREE.Vector2( 0.1, 0.0 ), 
+							new THREE.Vector2( 0.3, 0.0 ),
+							new THREE.Vector2( 0.5, 0.0 ),
+							new THREE.Vector2( 0.7, 0.0 ),
+							new THREE.Vector2( 0.9, 0.0 )]
+				},
+				crazyC: {
+					type: 'v2v',
+					value: [ new THREE.Vector2( 0.1, 0.0 ), 
+							new THREE.Vector2( 0.3, 0.0 ),
+							new THREE.Vector2( 0.5, 0.0 ),
+							new THREE.Vector2( 0.7, 0.0 ),
+							new THREE.Vector2( 0.9, 0.0 ),
+							new THREE.Vector2( 0.1, 0.0 ), 
+							new THREE.Vector2( 0.3, 0.0 ),
+							new THREE.Vector2( 0.5, 0.0 ),
+							new THREE.Vector2( 0.7, 0.0 ),
+							new THREE.Vector2( 0.9, 0.0 ),
+							new THREE.Vector2( 0.1, 0.0 ), 
+							new THREE.Vector2( 0.3, 0.0 ),
+							new THREE.Vector2( 0.5, 0.0 ),
+							new THREE.Vector2( 0.7, 0.0 ),
+							new THREE.Vector2( 0.9, 0.0 )]
+				},
+				chorus: {
+					value: 0.0
+				},
+				crazy: {
+					value: 0.0
+				},
 				R1: {
 					value: this.R1
 				},
@@ -113,30 +154,47 @@ export default class VideoGloop extends Component {
 		vids.videoCanvas.getContext('2d').drawImage(vids.videoElement, 0, 0);
 		vids.videoTexture.needsUpdate = true;
 		*/
-
-		const t = Date.now() - this.start_time;
+		if(!this.stop)
+			this.t = Date.now() - this.start_time;
 		this.videoAssets.canvas.getContext('2d').drawImage(this.videoAssets.video, 0, 0, 1024, 1024);
 		this.videoAssets.texture.needsUpdate = true;
-		this.mesh.material.uniforms.time.value = t;
+		this.mesh.material.uniforms.time.value = this.t;
 		this.mesh.material.uniforms.mode_time.value = Date.now() - this.mode_time;
 		this.mesh.material.uniforms.time.needsUpdate = true;
 
-		this.mesh.material.uniforms.c1.value.x = (Math.sin(t/(this.speed * 1000)) + 1)/2;
-		this.mesh.material.uniforms.c1.value.y = (Math.cos(t/(this.speed * 1000) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.c1.value.x = (Math.sin(this.t/(this.speed * 1000)) + 1)/2;
+		this.mesh.material.uniforms.c1.value.y = (Math.cos(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
 
-		this.mesh.material.uniforms.c2.value.x = (Math.sin(t/(this.speed * 1000) + 3.14/2) + 1)/2;
-		this.mesh.material.uniforms.c2.value.y = (Math.cos(t/(this.speed * 500)) + 1)/2;
+		this.mesh.material.uniforms.c2.value.x = (Math.sin(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.c2.value.y = (Math.cos(this.t/(this.speed * 500)) + 1)/2;
 
-		this.mesh.material.uniforms.c3.value.x = (Math.cos(t/(this.speed * 1000) + 3.14) + 1)/2;
-		this.mesh.material.uniforms.c3.value.y = (Math.tan(t/(this.speed * 1000)) + 1)/2;
+		this.mesh.material.uniforms.c3.value.x = (Math.cos(this.t/(this.speed * 1000) + 3.14) + 1)/2;
+		this.mesh.material.uniforms.c3.value.y = (Math.tan(this.t/(this.speed * 1000)) + 1)/2;
 
-		this.mesh.material.uniforms.c4.value.x = (Math.sin(t/(this.speed * 750) + 3.14/2) + 1)/2;
-		this.mesh.material.uniforms.c4.value.y = (Math.sin(t/(this.speed * 1000) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.c4.value.x = (Math.sin(this.t/(this.speed * 750) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.c4.value.y = (Math.sin(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
+
+		for(let i = 0; i < 5; i++) {
+			this.mesh.material.uniforms.cs.value[i].y = (Math.sin(this.t/(this.speed * 900) + 3.14/2) + 1)/2;
+		}
+		for(let i = 0; i < 15; i++) {
+			this.mesh.material.uniforms.crazyC.value[i].x = (Math.sin(this.t/(this.speed * (500 + this.crazyrands[i][0]*500)) + this.crazyrands[i][2]*3.14) + 1)/2;
+			this.mesh.material.uniforms.crazyC.value[i].y = (Math.sin(this.t/(this.speed * (500 + this.crazyrands[i][2]*500)) + this.crazyrands[i][3]*3.14) + 1)/2;
+		}
+		this.mesh.material.uniforms.cs.needsUpdate = true;
+		this.mesh.material.uniforms.crazyC.needsUpdate = true;
 
 		this.mesh.material.uniforms.c1.needsUpdate = true;
 		this.mesh.material.uniforms.c2.needsUpdate = true;
 		this.mesh.material.uniforms.c3.needsUpdate = true;
 		this.mesh.material.uniforms.c4.needsUpdate = true;
+		this.mesh.material.uniforms.cs.needsUpdate = true;
+
+		this.mesh.material.uniforms.chorus.value = this.chorus;
+		this.mesh.material.uniforms.chorus.needsUpdate = true;
+
+		this.mesh.material.uniforms.crazy.value = this.crazy;
+		this.mesh.material.uniforms.crazy.needsUpdate = true;
 
 		this.mesh.material.uniforms.R1.value = this.R1;
 		this.mesh.material.uniforms.R1.needsUpdate = true;
@@ -194,6 +252,17 @@ export default class VideoGloop extends Component {
 		if(e.key == "5") {
 			this.mode = 5;
 			this.mode_time = Date.now();
+		}
+
+		if(e.key == "Enter") {
+			this.stop = !this.stop;
+		}
+
+		if(e.key == "c") {
+			this.chorus = this.chorus > 0.0 ? 0.0 : 1.0;
+		}
+		if(e.key == "x") {
+			this.crazy = this.crazy > 0.0 ? 0.0 : 1.0;
 		}
 
 	}

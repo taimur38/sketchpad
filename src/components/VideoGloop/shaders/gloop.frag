@@ -6,9 +6,13 @@ uniform vec2 c1;
 uniform vec2 c2;
 uniform vec2 c3;
 uniform vec2 c4;
+uniform vec2 cs[ 5 ];
+uniform vec2 crazyC[ 15 ];
 
 uniform float R1;
 uniform float mode_time;
+uniform float chorus;
+uniform float crazy;
 
 varying vec2 _position;
 
@@ -21,7 +25,28 @@ void main() {
 	float d3 = distance(c3, _position);
 	float d4 = distance(c4, _position);
 
-	float meta_score = (R1/d1 + R1/d2 + R1/d3 + R1/d4) /4.0;
+	float top = (R1/d1 + R1/d2 + R1/d3 + R1/d4);
+	float bottom = 4.0;
+
+	if(chorus > 0.0) {
+		float total = 0.0;
+		for(int i = 0; i < 5; i++) {
+			total += R1 / distance(cs[i], _position);
+		}
+		top += total;
+		bottom += 5.0;
+	}
+
+	if(crazy > 0.0) {
+		float total = 0.0;
+		for(int i = 0; i < 15; i++) {
+			total += R1 / distance(crazyC[i], _position);
+		}
+		top += total;
+		bottom += 15.0;
+	}
+
+	float meta_score = top / bottom;
 
 	if(meta_score > 0.5 && meta_score < 0.5) {
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
