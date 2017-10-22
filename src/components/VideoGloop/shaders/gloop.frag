@@ -38,7 +38,7 @@ void main() {
 
 		float _d = min(min(d1, d2), min(d3, d4));
 
-		float h = (sin(time/700.0 + _d) + 1.0)/2.0;
+		float h = (sin(time/200.0 + _d + _position.x * _position.y * 40.0) + 1.0)/2.0;
 		vec4 col = texture2D(tex, _position);
 
 		if(h > 0.0) {
@@ -67,8 +67,9 @@ void main() {
 				}
 				else {
 					float m = clamp(mode_time/1000.0, 0.0, 1.0) * meta_score;
+					vec4 color = texture2D(tex, _position, clamp(m * 8.0, 0.0, 6.0));
 
-					gl_FragColor = texture2D(tex, _position, clamp(m * 8.0, 0.0, 10.0));
+					gl_FragColor = mix(color, color * 0.6, h);
 				}
 			}
 		}
