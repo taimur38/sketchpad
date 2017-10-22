@@ -64,7 +64,7 @@ void main() {
 
 		float _d = min(min(d1, d2), min(d3, d4));
 
-		float h = (sin(time/200.0 + _d + _position.x * _position.y * 40.0) + 1.0)/2.0;
+		float h = (sin(time/200.0 + _d + (0.5 - _position.x) * (0.5 - _position.y) * 60.0) + 1.0)/2.0;
 		vec4 col = texture2D(tex, _position);
 
 		if(h > 0.0) {
