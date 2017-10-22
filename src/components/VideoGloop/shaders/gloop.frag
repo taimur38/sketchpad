@@ -53,9 +53,10 @@ void main() {
 	}
 	else if(meta_score < 0.5 && mode != 9.0) {
 		gl_FragColor = vec4(bg, 1.0);
-		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-
-		gl_FragColor = texture2D(tex, _position);
+		if(mode == 4.0)
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+		else
+			gl_FragColor = texture2D(tex, _position);
 	}
 	else {
 		vec4 current = texture2D(tex, _position);
