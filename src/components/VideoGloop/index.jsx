@@ -5,7 +5,8 @@ import * as THREE from 'three'
 import gloopvert from '!raw-loader!./shaders/gloop.vert'
 import gloopfrag from '!raw-loader!./shaders/gloop.frag'
 //import waterVid from './output.mp4'
-import waterVid from './water.mp4'
+//import waterVid from './water.mp4'
+import waterVid from './scene1.mp4'
 
 export default class VideoGloop extends Component {
 
