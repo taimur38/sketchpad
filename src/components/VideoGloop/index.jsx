@@ -43,6 +43,7 @@ export default class VideoGloop extends Component {
 		this.stop = false;
 		this.chorus = 0.0;
 		this.crazy = 0.0;
+		this.vhsOn = 0.0;
 
 		this.crazyrands = [];
 
@@ -137,6 +138,9 @@ export default class VideoGloop extends Component {
 				},
 				mode_time: {
 					value: this.mode_time
+				},
+				vhsOn: {
+					value: 0.0
 				}
 			}
 		})
@@ -195,6 +199,9 @@ export default class VideoGloop extends Component {
 
 		this.mesh.material.uniforms.crazy.value = this.crazy;
 		this.mesh.material.uniforms.crazy.needsUpdate = true;
+
+		this.mesh.material.uniforms.vhsOn.value = this.vhsOn;
+		this.mesh.material.uniforms.vhsOn.needsUpdate = true;
 
 		this.mesh.material.uniforms.R1.value = this.R1;
 		this.mesh.material.uniforms.R1.needsUpdate = true;
@@ -263,6 +270,9 @@ export default class VideoGloop extends Component {
 		}
 		if(e.key == "x") {
 			this.crazy = this.crazy > 0.0 ? 0.0 : 1.0;
+		}
+		if(e.key == "v") {
+			this.vhsOn = this.vhsOn > 0.0 ? 0.0 : 1.0;
 		}
 
 	}

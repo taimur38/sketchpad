@@ -13,10 +13,52 @@ uniform float R1;
 uniform float mode_time;
 uniform float chorus;
 uniform float crazy;
+uniform float vhsOn;
 
 varying vec2 _position;
 
+highp float rand(vec2 co)
+{
+    highp float a = 12.9898;
+    highp float b = 78.233;
+    highp float c = 43758.5453;
+    highp float dt= dot(co.xy ,vec2(a,b));
+    highp float sn= mod(dt,3.14);
+    return fract(sin(sn) * c);
+}
+
+vec4 vhs(vec2 p, float lod) {
+	if(vhsOn > 0.0) {
+		highp float magnitude = 0.000013;
+		
+		
+		// Set up offset
+		vec2 offsetRedUV = p;
+		offsetRedUV.x = p.x + rand(vec2(time*0.03,p.y*0.42)) * 0.003;
+		offsetRedUV.x += sin(rand(vec2(time*0.2, p.y)))*magnitude;
+		
+		vec2 offsetGreenUV = p;
+		offsetGreenUV.x = p.x + rand(vec2(time*0.004,p.y*0.002)) * 0.009;
+		offsetGreenUV.x += sin(time*9.0)*magnitude;
+		
+		vec2 offsetBlueUV = p;
+		offsetBlueUV.x = p.y;
+		offsetBlueUV.x += rand(vec2(cos(time*0.01),sin(p.y)));
+		
+		// Load Texture
+		float r = texture2D(tex, offsetRedUV, lod).r;
+		float g = texture2D(tex, offsetGreenUV, lod).g;
+		float b = texture2D(tex, p, lod).b;
+		
+		return vec4(r,g,b,0);
+	}
+	else {
+		return texture2D(tex, p, lod);
+	}
+}
+
 void main() {
+	vec4 color;
 
 	vec3 bg = vec3(195.0/255.0, 164.0/255.0, 125.0/255.0);
 
@@ -49,34 +91,34 @@ void main() {
 	float meta_score = top / bottom;
 
 	if(meta_score > 0.5 && meta_score < 0.5) {
-		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+		color = vec4(0.0, 0.0, 0.0, 1.0);
 	}
 	else if(meta_score < 0.5 && mode != 9.0) {
-		gl_FragColor = vec4(bg, 1.0);
+		color = vec4(bg, 1.0);
 		if(mode == 4.0)
-			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			color = vec4(0.0, 0.0, 0.0, 1.0);
 		else
-			gl_FragColor = texture2D(tex, _position);
+			color = vhs(_position, 0.0);
 	}
 	else {
-		vec4 current = texture2D(tex, _position);
-		gl_FragColor = current;
+		vec4 current = vhs(_position, 0.0);
+		color = current;
 
 		float _d = min(min(d1, d2), min(d3, d4));
 
 		float h = (sin(time/200.0 + _d + (0.5 - _position.x) * (0.5 - _position.y) * 60.0) + 1.0)/2.0;
-		vec4 col = texture2D(tex, _position);
+		vec4 col = vhs(_position, 0.0);
 
 		if(h > 0.0) {
 			if(mode == 0.0) {
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				color = vec4(0.0, 0.0, 0.0, 1.0);
 			}
 			if(mode == 1.0) {
-				gl_FragColor = vec4(bg, 1.0);
+				color = vec4(bg, 1.0);
 			}
 			if(mode == 2.0) {
 				if(meta_score > 0.5 && meta_score < 0.51) {
-					gl_FragColor = 0.5 * texture2D(tex, _position);
+					color = 0.5 * vhs(_position, 0.0);
 				}
 				else {
 					vec2 p;
@@ -84,23 +126,23 @@ void main() {
 					float m = clamp(mode_time/5000.0, 0.0, 1.0) * meta_score * 30.0;
 					p.x = float(int(_position.x * m))/m;
 					p.y = float(int(_position.y * m))/m;
-					gl_FragColor = texture2D(tex, p);
+					color = vhs(p, 0.0);
 				}
 			}
 			if(mode == 3.0) {
 				if(meta_score > 0.5 && meta_score < 0.51) {
-					gl_FragColor = 0.5 * texture2D(tex, _position);
+					color = 0.5 * vhs(_position, 0.0);
 				}
 				else {
 					float m = clamp(mode_time/1000.0, 0.0, 1.0) * meta_score;
-					vec4 color = texture2D(tex, _position, clamp(m * 8.0, 0.0, 6.0));
+					vec4 temp = vhs(_position, clamp(m * 8.0, 0.0, 6.0));
 
-					gl_FragColor = mix(color, color * 0.6, h);
+					color = mix(temp, temp * 0.6, h);
 				}
 			}
 		}
 		else {
-			gl_FragColor = col;
+			color = col;
 		}
 
 		//gl_FragColor = mix(col, vec4(0.0, 0.0, 0.0, 1.0), h);
@@ -111,6 +153,8 @@ void main() {
 
 		//gl_FragColor = texture2D(tex, newPos);
 	}
+
+	gl_FragColor = color;
 
 
 }
