@@ -6,8 +6,8 @@ import gloopvert from '!raw-loader!./shaders/gloop.vert'
 import gloopfrag from '!raw-loader!./shaders/gloop.frag'
 //import waterVid from './output.mp4'
 //import waterVid from './water.mp4'
-//import waterVid from './scene1.mp4'
-import waterVid from './crop.mp4'
+import waterVid from './scene1.mp4'
+//import waterVid from './crop.mp4'
 
 export default class VideoGloop extends Component {
 
@@ -62,7 +62,7 @@ export default class VideoGloop extends Component {
 
 	componentDidMount() {
 
-		this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
 		this.camera.position.z = 1000;
 
 		this.start_time = Date.now();
@@ -76,7 +76,7 @@ export default class VideoGloop extends Component {
 
 		this.videoAssets = this.createVideoTexture();
 
-		const geometry = new THREE.PlaneBufferGeometry(1024, 1024);
+		const geometry = new THREE.PlaneBufferGeometry(1920, 1080);
 		const material = new THREE.ShaderMaterial({
 			vertexShader: gloopvert,
 			fragmentShader: gloopfrag,
