@@ -14,6 +14,8 @@ uniform float mode_time;
 uniform float chorus;
 uniform float crazy;
 uniform float vhsOn;
+uniform float show_bg;
+uniform float show_bg_time;
 
 varying vec2 _position;
 
@@ -60,7 +62,7 @@ vec4 vhs(vec2 p, float lod) {
 void main() {
 	vec4 color;
 
-	vec3 bg = vec3(195.0/255.0, 164.0/255.0, 125.0/255.0);
+	vec3 bg = vec3(36.0/255.0, 42.0/255.0, 74.0/255.0);
 
 	float d1 = distance(c1, _position);
 	float d2 = distance(c2, _position);
@@ -90,15 +92,17 @@ void main() {
 
 	float meta_score = top / bottom;
 
+	float transition_total = 1000.0;
+	float tt = clamp(mode_time/transition_total, 0.0, 1.0);
+
 	if(meta_score > 0.5 && meta_score < 0.5) {
 		color = vec4(0.0, 0.0, 0.0, 1.0);
 	}
-	else if(meta_score < 0.5 && mode != 9.0) {
-		color = vec4(bg, 1.0);
-		if(mode == 4.0)
-			color = vec4(0.0, 0.0, 0.0, 1.0);
-		else
-			color = vhs(_position, 0.0);
+	else if(meta_score < 0.5) {
+		
+		float opacity = abs(show_bg - clamp(show_bg_time/1000.0, 0.0, 1.0));
+		color = vec4(bg, opacity);
+		color = opacity * vhs(_position,0.0 );
 	}
 	else {
 		vec4 current = vhs(_position, 0.0);
@@ -111,7 +115,10 @@ void main() {
 
 		if(h > 0.0) {
 			if(mode == 0.0) {
-				color = vec4(0.0, 0.0, 0.0, 1.0);
+				color = (1.0 - tt) * color;
+			}
+			if(mode == 4.0) {
+				color = tt * color;
 			}
 			if(mode == 1.0) {
 				color = vec4(bg, 1.0);
@@ -152,6 +159,16 @@ void main() {
 		newPos.y = _position.y + -cos(R1 * _d * _d);
 
 		//gl_FragColor = texture2D(tex, newPos);
+	}
+
+	if(mode == 6.0) {
+		float m = (sin(mode_time/500.0) + 1.0)/2.0;
+		if(meta_score < 0.5) {
+			color = m * color;
+		}
+		else {
+			color = (1.0 - m) * color;
+		}
 	}
 
 	gl_FragColor = color;

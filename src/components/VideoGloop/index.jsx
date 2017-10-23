@@ -46,6 +46,10 @@ export default class VideoGloop extends Component {
 		this.chorus = 0.0;
 		this.crazy = 0.0;
 		this.vhsOn = 0.0;
+		this.show_bg = 0.0;
+		this.show_bg_time = Date.now();
+		this.show_gloop = 0.0;
+		this.show_gloop_time = Date.now();
 
 		this.crazyrands = [];
 
@@ -143,6 +147,18 @@ export default class VideoGloop extends Component {
 				},
 				vhsOn: {
 					value: 0.0
+				},
+				show_bg: {
+					value: this.show_bg
+				},
+				show_bg_time: {
+					value: this.show_bg_time
+				},
+				show_gloop: {
+					value: this.show_gloop,
+				},
+				show_gloop_time:{
+					value: this.show_gloop_time
 				}
 			}
 		})
@@ -211,6 +227,12 @@ export default class VideoGloop extends Component {
 		this.mesh.material.uniforms.mode.value = this.mode;
 		this.mesh.material.uniforms.mode.needsUpdate = true;
 
+		this.mesh.material.uniforms.show_bg_time.value = Date.now() - this.show_bg_time;
+		this.mesh.material.uniforms.show_bg_time.needsUpdate = true;
+
+		this.mesh.material.uniforms.show_bg.value = this.show_bg;
+		this.mesh.material.uniforms.show_bg.needsUpdate = true;
+
 		this.renderer.render(this.scene, this.camera);
 		requestAnimationFrame(this.animate);
 
@@ -223,58 +245,71 @@ export default class VideoGloop extends Component {
 	}
 
 	onKeyDown = (e) => {
-		if(e.key == "ArrowUp") {
+		if(e.key === "ArrowUp") {
 			this.R1 += 0.005;
 		}
 
-		if(e.key == "ArrowDown") {
+		if(e.key === "ArrowDown") {
 			this.R1 -= 0.005;
 		}
 
-		if(e.key == "ArrowLeft") {
+		if(e.key === "ArrowLeft") {
 			this.speed += 0.05;
 		}
-		if(e.key == "ArrowRight") {
+		if(e.key === "ArrowRight") {
 			this.speed -= 0.05;
 		}
 
-		if(e.key == "0") {
+		if(e.key === "0") {
 			this.mode = 0
 			this.mode_time = Date.now();
 		}
-		if(e.key == "1") {
+		if(e.key === "1") {
 			this.mode = 1;
 			this.mode_time = Date.now();
 		}
-		if(e.key == "2") {
+		if(e.key === "2") {
 			this.mode = 2;
 			this.mode_time = Date.now();
 		}
-		if(e.key == "3") {
+		if(e.key === "3") {
 			this.mode = 3;
 			this.mode_time = Date.now();
 		}
-		if(e.key == "4") {
+		if(e.key === "4") {
 			this.mode = 4;
 			this.mode_time = Date.now();
 		}
-		if(e.key == "5") {
+		if(e.key === "5") {
 			this.mode = 5;
 			this.mode_time = Date.now();
 		}
+		if(e.key === "6") {
+			this.mode = 6;
+			this.mode_time = Date.now();
+		}
 
-		if(e.key == "Enter") {
+		if(e.key === "Enter") {
 			this.stop = !this.stop;
 		}
 
-		if(e.key == "c") {
+		if(e.key === "c") {
 			this.chorus = this.chorus > 0.0 ? 0.0 : 1.0;
 		}
-		if(e.key == "x") {
+		if(e.key === "x") {
 			this.crazy = this.crazy > 0.0 ? 0.0 : 1.0;
 		}
-		if(e.key == "v") {
+		if(e.key === "v") {
 			this.vhsOn = this.vhsOn > 0.0 ? 0.0 : 1.0;
+		}
+
+		if(e.key === "b") {
+			this.show_bg = 1.0 - this.show_bg;
+			this.show_bg_time = Date.now();
+		}
+		if(e.key == "g") {
+			this.show_gloop - 1.0 - this.show_gloop;
+			this.show_gloop_time = Date.now();
 		}
 
 	}
