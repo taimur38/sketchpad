@@ -1,11 +1,13 @@
 
 uniform sampler2D tex;
+uniform sampler2D nextex;
 uniform float time;
 uniform float mode;
 uniform vec2 c1;
 uniform vec2 c2;
 uniform vec2 c3;
 uniform vec2 c4;
+uniform vec2 horsemen[4];
 uniform vec2 cs[ 5 ];
 uniform vec2 crazyC[ 15 ];
 
@@ -16,6 +18,8 @@ uniform float crazy;
 uniform float vhsOn;
 uniform float show_bg;
 uniform float show_bg_time;
+
+uniform float video_index_time;
 
 varying vec2 _position;
 
@@ -55,7 +59,9 @@ vec4 vhs(vec2 p, float lod) {
 		return vec4(r,g,b,0);
 	}
 	else {
-		return texture2D(tex, p, lod);
+
+		float ip = clamp(video_index_time/2000.0, 0.0, 1.0);
+		return ip * texture2D(tex, p, lod) + (1.0 - ip) * texture2D(nextex, p, lod);
 	}
 }
 
@@ -69,8 +75,12 @@ void main() {
 	float d3 = distance(c3, _position);
 	float d4 = distance(c4, _position);
 
-	float top = (R1/d1 + R1/d2 + R1/d3 + R1/d4);
 	float bottom = 4.0;
+	float top = 0.0;
+
+	for(int i = 0; i < 4; i++) {
+		top += R1/distance(horsemen[i], _position);
+	}
 
 	if(chorus > 0.0) {
 		float total = 0.0;
