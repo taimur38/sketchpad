@@ -5,17 +5,17 @@ import * as THREE from 'three'
 import gloopvert from '!raw-loader!./shaders/gloop.vert'
 import gloopfrag from '!raw-loader!./shaders/gloop.frag'
 //import waterVid from './output.mp4'
-//import waterVid from './water.mp4'
+import nextVid from './water.mp4'
 import waterVid from './scene1.mp4'
 //import waterVid from './crop.mp4'
 
 export default class VideoGloop extends Component {
 
-	createVideoTexture = () => {
+	createVideoTexture = (vid) => {
 
 		const video = document.createElement('video');
 
-		video.src = waterVid;
+		video.src = vid;
 		video.height = 1024;
 		//video.width = 1820;
 		video.muted = true;
@@ -23,7 +23,7 @@ export default class VideoGloop extends Component {
 		video.autoplay = true;
 		video.loop = true;
 		if(this.video)
-			this.video.src = waterVid;
+			this.video.src = vid;
 
 		const canvas = document.createElement('canvas');
 		canvas.width = 1024;
@@ -36,11 +36,18 @@ export default class VideoGloop extends Component {
 		videoTexture.wrapT = THREE.RepeatWrapping;
 		videoTexture.wrapS = THREE.RepeatWrapping;
 
-		document.onkeydown = this.onKeyDown;
+		return {
+			video,
+			canvas,
+			texture: videoTexture
+		}
+	}
+
+	componentDidMount() {
 
 		this.mode = 0;
 		this.R1 = 0.25;
-		this.speed = 1;
+		this.speed = 2.0;
 		this.mode_time = 0;
 		this.stop = false;
 		this.chorus = 0.0;
@@ -51,20 +58,17 @@ export default class VideoGloop extends Component {
 		this.show_gloop = 0.0;
 		this.show_gloop_time = Date.now();
 
+		this.video_index = 0;
+		this.video_index_time = 0;
+
 		this.crazyrands = [];
 
 		for(let i = 0; i < 15; i++) {
 			this.crazyrands.push([Math.random(), Math.random(), Math.random(), Math.random()]);
 		}
 
-		return {
-			video,
-			canvas,
-			texture: videoTexture
-		}
-	}
 
-	componentDidMount() {
+		document.onkeydown = this.onKeyDown;
 
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
 		this.camera.position.z = 1000;
@@ -78,7 +82,10 @@ export default class VideoGloop extends Component {
 
 		window.onresize = this.windowResize;
 
-		this.videoAssets = this.createVideoTexture();
+		this.videoAssets = [
+			this.createVideoTexture(waterVid),
+			this.createVideoTexture(nextVid)
+		]
 
 		const geometry = new THREE.PlaneBufferGeometry(1920, 1080);
 		const material = new THREE.ShaderMaterial({
@@ -87,7 +94,11 @@ export default class VideoGloop extends Component {
 			uniforms: {
 				tex: {
 					type: "t",
-					value: this.videoAssets.texture
+					value: this.videoAssets[0].texture
+				},
+				nextex: {
+					type: "t",
+					value: this.videoAssets[1].texture
 				},
 				time: {
 					value: Date.now() - this.start_time
@@ -95,17 +106,14 @@ export default class VideoGloop extends Component {
 				mode: {
 					value: this.mode
 				},
-				c1: {
-					value: new THREE.Vector2(.5, .5)
-				},
-				c2: {
-					value: new THREE.Vector2(.5, .5)
-				},
-				c3: {
-					value: new THREE.Vector2(.5, .5)
-				},
-				c4: {
-					value: new THREE.Vector2(.5, .5)
+				horsemen: {
+					type: 'v2v',
+					value: [
+						new THREE.Vector2(.5, .5),
+						new THREE.Vector2(.5, .5),
+						new THREE.Vector2(.5, .5),
+						new THREE.Vector2(.5, .5)
+					]
 				},
 				cs: {
 					type: 'v2v',
@@ -159,6 +167,12 @@ export default class VideoGloop extends Component {
 				},
 				show_gloop_time:{
 					value: this.show_gloop_time
+				},
+				video_index: {
+					value: this.video_index
+				},
+				video_index_time: {
+					value: this.video_index_time
 				}
 			}
 		})
@@ -176,25 +190,41 @@ export default class VideoGloop extends Component {
 		vids.videoCanvas.getContext('2d').drawImage(vids.videoElement, 0, 0);
 		vids.videoTexture.needsUpdate = true;
 		*/
-		if(!this.stop)
+		if(!this.stop) {
 			this.t = Date.now() - this.start_time;
-		this.videoAssets.canvas.getContext('2d').drawImage(this.videoAssets.video, 0, 0, 1024, 1024);
-		this.videoAssets.texture.needsUpdate = true;
+		}
+		
+		this.mesh.material.uniforms.tex.value = this.videoAssets[this.video_index].texture;
+		this.mesh.material.uniforms.tex.needsUpdate = true;
+		this.mesh.material.uniforms.nextex.value = this.videoAssets[(this.video_index + 1) % this.videoAssets.length].texture;
+		this.mesh.material.uniforms.nextex.needsUpdate = true;
+
+		for(let i = 0; i < this.videoAssets.length; i++) {
+			this.videoAssets[i].canvas.getContext('2d').drawImage(this.videoAssets[i].video, 0, 0, 1024, 1024);
+			this.videoAssets[i].texture.needsUpdate = true;
+		}
+
+		this.mesh.material.uniforms.video_index_time.value = Date.now() - this.video_index_time;
+		this.mesh.material.uniforms.video_index_time.needsUpdate = true; 
+
+		this.mesh.material.uniforms.video_index.value = this.video_index; 
+		this.mesh.material.uniforms.video_index.needsUpdate = true;
+
 		this.mesh.material.uniforms.time.value = this.t;
 		this.mesh.material.uniforms.mode_time.value = Date.now() - this.mode_time;
 		this.mesh.material.uniforms.time.needsUpdate = true;
 
-		this.mesh.material.uniforms.c1.value.x = (Math.sin(this.t/(this.speed * 1000)) + 1)/2;
-		this.mesh.material.uniforms.c1.value.y = (Math.cos(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[0].x = (Math.sin(this.t/(this.speed * 1000)) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[0].y = (Math.cos(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
 
-		this.mesh.material.uniforms.c2.value.x = (Math.sin(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
-		this.mesh.material.uniforms.c2.value.y = (Math.cos(this.t/(this.speed * 500)) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[1].x = (Math.sin(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[1].y = (Math.cos(this.t/(this.speed * 500)) + 1)/2;
 
-		this.mesh.material.uniforms.c3.value.x = (Math.cos(this.t/(this.speed * 1000) + 3.14) + 1)/2;
-		this.mesh.material.uniforms.c3.value.y = (Math.tan(this.t/(this.speed * 1000)) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[2].x = (Math.cos(this.t/(this.speed * 1000) + 3.14) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[2].y = (Math.tan(this.t/(this.speed * 1000)) + 1)/2;
 
-		this.mesh.material.uniforms.c4.value.x = (Math.sin(this.t/(this.speed * 750) + 3.14/2) + 1)/2;
-		this.mesh.material.uniforms.c4.value.y = (Math.sin(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[3].x = (Math.sin(this.t/(this.speed * 750) + 3.14/2) + 1)/2;
+		this.mesh.material.uniforms.horsemen.value[3].y = (Math.sin(this.t/(this.speed * 1000) + 3.14/2) + 1)/2;
 
 		for(let i = 0; i < 5; i++) {
 			this.mesh.material.uniforms.cs.value[i].y = (Math.sin(this.t/(this.speed * 900) + 3.14/2) + 1)/2;
@@ -203,13 +233,11 @@ export default class VideoGloop extends Component {
 			this.mesh.material.uniforms.crazyC.value[i].x = (Math.sin(this.t/(this.speed * (500 + this.crazyrands[i][0]*500)) + this.crazyrands[i][2]*3.14) + 1)/2;
 			this.mesh.material.uniforms.crazyC.value[i].y = (Math.sin(this.t/(this.speed * (500 + this.crazyrands[i][2]*500)) + this.crazyrands[i][3]*3.14) + 1)/2;
 		}
+
+		this.mesh.material.uniforms.horsemen.needsUpdate = true;
 		this.mesh.material.uniforms.cs.needsUpdate = true;
 		this.mesh.material.uniforms.crazyC.needsUpdate = true;
 
-		this.mesh.material.uniforms.c1.needsUpdate = true;
-		this.mesh.material.uniforms.c2.needsUpdate = true;
-		this.mesh.material.uniforms.c3.needsUpdate = true;
-		this.mesh.material.uniforms.c4.needsUpdate = true;
 		this.mesh.material.uniforms.cs.needsUpdate = true;
 
 		this.mesh.material.uniforms.chorus.value = this.chorus;
@@ -310,6 +338,12 @@ export default class VideoGloop extends Component {
 		if(e.key == "g") {
 			this.show_gloop - 1.0 - this.show_gloop;
 			this.show_gloop_time = Date.now();
+		}
+
+		if(e.key == "n") {
+			this.video_index = (this.video_index + 1) % this.videoAssets.length;
+			this.video_index_time = Date.now();
+			console.log(this.video_index);
 		}
 
 	}
