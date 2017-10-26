@@ -31,16 +31,16 @@ highp float rand(vec2 co)
 
 vec4 vhs(vec2 p, float lod) {
 	if(vhsOn > 0.0) {
-		highp float magnitude = 0.000013;
+		highp float magnitude = 0.000002;
 		
 		
 		// Set up offset
 		vec2 offsetRedUV = p;
-		offsetRedUV.x = p.x + rand(vec2(time*0.03,p.y*0.42)) * 0.003;
+		offsetRedUV.x = p.x + rand(vec2(time*0.03,p.y*0.42)) * 0.002;
 		offsetRedUV.x += sin(rand(vec2(time*0.2, p.y)))*magnitude;
 		
 		vec2 offsetGreenUV = p;
-		offsetGreenUV.x = p.x + rand(vec2(time*0.004,p.y*0.002)) * 0.009;
+		offsetGreenUV.x = p.x + rand(vec2(time*0.004,p.y*0.002)) * 0.007;
 		offsetGreenUV.x += sin(time*9.0)*magnitude;
 		
 		vec2 offsetBlueUV = p;
