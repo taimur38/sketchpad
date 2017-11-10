@@ -11,6 +11,7 @@ class App extends Component {
 				<Link to="/cube">Cube</Link>
 				<Link to="/metaball">Metaball</Link>
 				<Link to="/waves">Waves</Link>
+				<Link to="/plane">Plane</Link>
 			</div>
 		);
 	}
