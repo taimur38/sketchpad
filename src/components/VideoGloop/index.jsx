@@ -5,8 +5,10 @@ import * as THREE from 'three'
 import gloopvert from '!raw-loader!./shaders/gloop.vert'
 import gloopfrag from '!raw-loader!./shaders/gloop.frag'
 //import waterVid from './output.mp4'
-import nextVid from './water.mp4'
-import waterVid from './scene1.mp4'
+import scene4 from './scene4.mp4'
+import scene1 from './scene1.mp4'
+import scene2 from './scene2.mp4'
+import scene3 from './scene3.mp4'
 //import waterVid from './crop.mp4'
 
 export default class VideoGloop extends Component {
@@ -83,8 +85,10 @@ export default class VideoGloop extends Component {
 		window.onresize = this.windowResize;
 
 		this.videoAssets = [
-			this.createVideoTexture(waterVid),
-			this.createVideoTexture(nextVid)
+			this.createVideoTexture(scene1),
+			this.createVideoTexture(scene2),
+			this.createVideoTexture(scene3),
+			this.createVideoTexture(scene4)
 		]
 
 		const geometry = new THREE.PlaneBufferGeometry(1920, 1080);
