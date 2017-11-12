@@ -348,7 +348,8 @@ export default class VideoGloop extends Component {
 			this.video_index = (this.video_index + 1) % this.videoAssets.length;
 
 			this.videoAssets[(this.video_index + 1) % this.videoAssets.length].video.currentTime = 0;
-			this.videoAssets[(this.video_index + 1) % this.videoAssets.length].video.play();
+			//this.videoAssets[(this.video_index + 1) % this.videoAssets.length].video.play();
+			this.videoAssets[(this.video_index + 1) % this.videoAssets.length].video.pause();
 			this.video_index_time = Date.now();
 			console.log(this.video_index);
 		}
