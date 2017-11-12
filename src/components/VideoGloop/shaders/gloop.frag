@@ -40,7 +40,7 @@ vec4 vhs(vec2 p, float lod, float meta_score, float min_d, float min_omega) {
 		
 		// Set up offset
 		vec2 offsetRedUV = p;
-		offsetRedUV.x = p.x + rand(vec2(time*0.03,p.y*0.42)) * 0.002;
+		offsetRedUV.x = p.x + rand(vec2(time*0.03,p.y*0.42)) * 0.0005;
 		offsetRedUV.x += sin(rand(vec2(time*0.2, p.y)))*magnitude;
 		
 		vec2 offsetGreenUV = p;
