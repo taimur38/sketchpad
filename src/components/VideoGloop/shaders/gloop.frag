@@ -77,10 +77,14 @@ void main() {
 
 	vec3 bg = vec3(36.0/255.0, 42.0/255.0, 74.0/255.0);
 
-	float d1 = distance(c1, _position);
-	float d2 = distance(c2, _position);
-	float d3 = distance(c3, _position);
-	float d4 = distance(c4, _position);
+	//vec2 d_pos = vec2(_position.x * 1920.0/1080.0 - 0.5, _position.y);
+	//vec2 d_pos = vec2(_position.x, clamp(_position.y * 1080.0/1920.0, 0.0, 1.0));
+	vec2 d_pos = _position;
+
+	float d1 = distance(c1, d_pos);
+	float d2 = distance(c2, d_pos);
+	float d3 = distance(c3, d_pos);
+	float d4 = distance(c4, d_pos);
 
 	float bottom = 4.0;
 	float top = 0.0;
@@ -90,11 +94,11 @@ void main() {
 	float min_omega = 0.0; // angle from center of closest gloop
 
 	for(int i = 0; i < 4; i++) {
-		float currd = distance(horsemen[i], _position);
+		float currd = distance(horsemen[i], d_pos);
 
 		if(currd < min_distance) {
 			min_distance = currd;
-			min_omega = acos(dot(normalize(horsemen[i]), normalize(_position)));
+			min_omega = acos(dot(normalize(horsemen[i]), normalize(d_pos)));
 		}
 		top += R1/currd;
 	}
@@ -102,11 +106,11 @@ void main() {
 	if(chorus > 0.0) {
 		float total = 0.0;
 		for(int i = 0; i < 5; i++) {
-			float currd = distance(cs[i], _position);
+			float currd = distance(cs[i], d_pos);
 
 			if(currd < min_distance) {
 				min_distance = currd;
-				min_omega = acos(dot(normalize(cs[i]), normalize(_position)));
+				min_omega = acos(dot(normalize(cs[i]), normalize(d_pos)));
 			}
 			total += R1 / currd;
 		}
@@ -117,11 +121,11 @@ void main() {
 	if(crazy > 0.0) {
 		float total = 0.0;
 		for(int i = 0; i < 15; i++) {
-			float currd = distance(crazyC[i], _position);
+			float currd = distance(crazyC[i], d_pos);
 
 			if(currd < min_distance) {
 				min_distance = currd;
-				min_omega = acos(dot(normalize(crazyC[i]), normalize(_position)));
+				min_omega = acos(dot(normalize(crazyC[i]), normalize(d_pos)));
 			}
 			total += R1 / currd;
 		}

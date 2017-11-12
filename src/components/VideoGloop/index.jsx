@@ -21,8 +21,8 @@ export default class VideoGloop extends Component {
 		video.height = 1024;
 		//video.width = 1820;
 		video.muted = true;
-		video.play();
-		video.autoplay = true;
+		//video.play();
+		//video.autoplay = true;
 		video.loop = true;
 		if(this.video)
 			this.video.src = vid;
@@ -85,8 +85,8 @@ export default class VideoGloop extends Component {
 		window.onresize = this.windowResize;
 
 		this.videoAssets = [
-			this.createVideoTexture(scene1),
 			this.createVideoTexture(scene2),
+			this.createVideoTexture(scene1),
 			this.createVideoTexture(scene3),
 			this.createVideoTexture(scene4)
 		]
@@ -198,9 +198,9 @@ export default class VideoGloop extends Component {
 			this.t = Date.now() - this.start_time;
 		}
 		
-		this.mesh.material.uniforms.tex.value = this.videoAssets[this.video_index].texture;
+		this.mesh.material.uniforms.tex.value = this.videoAssets[(this.video_index + 1) % this.videoAssets.length].texture;
 		this.mesh.material.uniforms.tex.needsUpdate = true;
-		this.mesh.material.uniforms.nextex.value = this.videoAssets[(this.video_index + 1) % this.videoAssets.length].texture;
+		this.mesh.material.uniforms.nextex.value = this.videoAssets[(this.video_index)].texture;
 		this.mesh.material.uniforms.nextex.needsUpdate = true;
 
 		for(let i = 0; i < this.videoAssets.length; i++) {
@@ -346,8 +346,16 @@ export default class VideoGloop extends Component {
 
 		if(e.key == "n") {
 			this.video_index = (this.video_index + 1) % this.videoAssets.length;
+
+			this.videoAssets[(this.video_index + 1) % this.videoAssets.length].video.currentTime = 0;
+			this.videoAssets[(this.video_index + 1) % this.videoAssets.length].video.play();
 			this.video_index_time = Date.now();
 			console.log(this.video_index);
+		}
+
+		if(e.key == "p") {
+			const v = this.videoAssets[(this.video_index + 1) % this.videoAssets.length].video;
+			v.paused ? v.play() : v.pause();
 		}
 
 	}
