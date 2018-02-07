@@ -25,19 +25,6 @@
     <noscript>
       You need to enable JavaScript to run this app.
 	</noscript>
-	<script>
-		window.onload = function() {
-
-			function requestFs() {
-				var f = (elem.requestFullscreen || elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullScreen).bind(elem);
-				f();
-			}
-
-			var elem = document.getElementById("root");
-			elem.onclick = requestFs;
-			elem.ontouchstart = requestFs;
-		}
-	</script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
