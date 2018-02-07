@@ -7,6 +7,7 @@ import MaterialTest from './components/MaterialTest'
 import MetaBalls from './components/MetaBalls'
 import Waves from './components/Waves'
 import Plane from './components/Plane2'
+import Sphere from './components/Sphere'
 
 const Routes = (props) => (
 	<BrowserRouter>
@@ -17,6 +18,7 @@ const Routes = (props) => (
 			<Route path="/metaball" component={MetaBalls} />
 			<Route path="/waves" component={Waves} />
 			<Route path="/plane" component={Plane} />
+			<Route path="/sphere" component={Sphere} />
 		</Switch>
 	</BrowserRouter>
 )
