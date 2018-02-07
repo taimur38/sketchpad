@@ -25,26 +25,26 @@ varying vec2 _position;
 
 highp float rand(vec2 co)
 {
-    highp float a = 12.9898;
-    highp float b = 78.233;
-    highp float c = 43758.5453;
-    highp float dt= dot(co.xy ,vec2(a,b));
-    highp float sn= mod(dt,3.14);
-    return fract(sin(sn) * c);
+	highp float a = 12.9898;
+	highp float b = 78.233;
+	highp float c = 43758.5453;
+	highp float dt= dot(co.xy ,vec2(a,b));
+	highp float sn= mod(dt,3.14);
+	return fract(sin(sn) * c);
 }
 
-vec4 vhs(vec2 p, float lod) {
+vec4 vhs(vec2 p, float lod, float meta_score, float min_d, float min_omega) {
 	if(vhsOn > 0.0) {
-		highp float magnitude = 0.000013;
+		highp float magnitude = 0.000002;
 		
 		
 		// Set up offset
 		vec2 offsetRedUV = p;
-		offsetRedUV.x = p.x + rand(vec2(time*0.03,p.y*0.42)) * 0.003;
+		offsetRedUV.x = p.x + rand(vec2(time*0.03,p.y*0.42)) * 0.0005;
 		offsetRedUV.x += sin(rand(vec2(time*0.2, p.y)))*magnitude;
 		
 		vec2 offsetGreenUV = p;
-		offsetGreenUV.x = p.x + rand(vec2(time*0.004,p.y*0.002)) * 0.009;
+		offsetGreenUV.x = p.x + rand(vec2(time*0.004,p.y*0.002)) * 0.007;
 		offsetGreenUV.x += sin(time*9.0)*magnitude;
 		
 		vec2 offsetBlueUV = p;
@@ -61,7 +61,14 @@ vec4 vhs(vec2 p, float lod) {
 	else {
 
 		float ip = clamp(video_index_time/2000.0, 0.0, 1.0);
-		return ip * texture2D(tex, p, lod) + (1.0 - ip) * texture2D(nextex, p, lod);
+		float ms = clamp(meta_score, 0.0, 10.0); 
+		vec4 target  = texture2D(tex, p, lod);
+		vec4 prev = texture2D(nextex, p, lod);
+
+		if(min_d <= ip) {
+			return target;
+		}
+		return prev;
 	}
 }
 
@@ -70,22 +77,42 @@ void main() {
 
 	vec3 bg = vec3(36.0/255.0, 42.0/255.0, 74.0/255.0);
 
-	float d1 = distance(c1, _position);
-	float d2 = distance(c2, _position);
-	float d3 = distance(c3, _position);
-	float d4 = distance(c4, _position);
+	//vec2 d_pos = vec2(_position.x * 1920.0/1080.0 - 0.5, _position.y);
+	//vec2 d_pos = vec2(_position.x, clamp(_position.y * 1080.0/1920.0, 0.0, 1.0));
+	vec2 d_pos = _position;
+
+	float d1 = distance(c1, d_pos);
+	float d2 = distance(c2, d_pos);
+	float d3 = distance(c3, d_pos);
+	float d4 = distance(c4, d_pos);
 
 	float bottom = 4.0;
 	float top = 0.0;
 
+
+	float min_distance = 10000.0;
+	float min_omega = 0.0; // angle from center of closest gloop
+
 	for(int i = 0; i < 4; i++) {
-		top += R1/distance(horsemen[i], _position);
+		float currd = distance(horsemen[i], d_pos);
+
+		if(currd < min_distance) {
+			min_distance = currd;
+			min_omega = acos(dot(normalize(horsemen[i]), normalize(d_pos)));
+		}
+		top += R1/currd;
 	}
 
 	if(chorus > 0.0) {
 		float total = 0.0;
 		for(int i = 0; i < 5; i++) {
-			total += R1 / distance(cs[i], _position);
+			float currd = distance(cs[i], d_pos);
+
+			if(currd < min_distance) {
+				min_distance = currd;
+				min_omega = acos(dot(normalize(cs[i]), normalize(d_pos)));
+			}
+			total += R1 / currd;
 		}
 		top += total;
 		bottom += 5.0;
@@ -94,7 +121,13 @@ void main() {
 	if(crazy > 0.0) {
 		float total = 0.0;
 		for(int i = 0; i < 15; i++) {
-			total += R1 / distance(crazyC[i], _position);
+			float currd = distance(crazyC[i], d_pos);
+
+			if(currd < min_distance) {
+				min_distance = currd;
+				min_omega = acos(dot(normalize(crazyC[i]), normalize(d_pos)));
+			}
+			total += R1 / currd;
 		}
 		top += total;
 		bottom += 15.0;
@@ -111,17 +144,15 @@ void main() {
 	else if(meta_score < 0.5) {
 		
 		float opacity = abs(show_bg - clamp(show_bg_time/1000.0, 0.0, 1.0));
-		color = vec4(bg, opacity);
-		color = opacity * vhs(_position,0.0 );
+		color = opacity * vhs(_position,0.0, meta_score, min_distance, min_omega);
 	}
 	else {
-		vec4 current = vhs(_position, 0.0);
+		vec4 current = vhs(_position, 0.0, meta_score, min_distance, min_omega);
 		color = current;
 
 		float _d = min(min(d1, d2), min(d3, d4));
 
 		float h = (sin(time/200.0 + _d + (0.5 - _position.x) * (0.5 - _position.y) * 60.0) + 1.0)/2.0;
-		vec4 col = vhs(_position, 0.0);
 
 		if(h > 0.0) {
 			if(mode == 0.0) {
@@ -135,7 +166,7 @@ void main() {
 			}
 			if(mode == 2.0) {
 				if(meta_score > 0.5 && meta_score < 0.51) {
-					color = 0.5 * vhs(_position, 0.0);
+					color = 0.5 * current;
 				}
 				else {
 					vec2 p;
@@ -143,26 +174,24 @@ void main() {
 					float m = clamp(mode_time/5000.0, 0.0, 1.0) * meta_score * 30.0;
 					p.x = float(int(_position.x * m))/m;
 					p.y = float(int(_position.y * m))/m;
-					color = vhs(p, 0.0);
+					color = vhs(p, 0.0, meta_score, min_distance, min_omega);
 				}
 			}
 			if(mode == 3.0) {
 				if(meta_score > 0.5 && meta_score < 0.51) {
-					color = 0.5 * vhs(_position, 0.0);
+					color = 0.5 * vhs(_position, 0.0, meta_score, min_distance, min_omega);
 				}
 				else {
 					float m = clamp(mode_time/1000.0, 0.0, 1.0) * meta_score;
-					vec4 temp = vhs(_position, clamp(m * 8.0, 0.0, 6.0));
+					vec4 temp = vhs(_position, clamp(m * 8.0, 0.0, 6.0), meta_score, min_distance, min_omega);
 
 					color = mix(temp, temp * 0.6, h);
 				}
 			}
 		}
 		else {
-			color = col;
+			color = current;
 		}
-
-		//gl_FragColor = mix(col, vec4(0.0, 0.0, 0.0, 1.0), h);
 
 		vec2 newPos;
 		newPos.x = _position.x + sin(R1 * _d * time/500.0);
