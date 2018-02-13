@@ -8,6 +8,7 @@ import MetaBalls from './components/MetaBalls'
 import Waves from './components/Waves'
 import Plane from './components/Plane2'
 import Sphere from './components/Sphere'
+import Main from './components/Main'
 
 const Routes = (props) => (
 	<BrowserRouter>
@@ -19,6 +20,7 @@ const Routes = (props) => (
 			<Route path="/waves" component={Waves} />
 			<Route path="/plane" component={Plane} />
 			<Route path="/sphere" component={Sphere} />
+			<Route path="/main" component={Main} />
 		</Switch>
 	</BrowserRouter>
 )
