@@ -7,33 +7,48 @@ export default class Plane2 extends Component {
 
 	componentDidMount() {
 
+		const canvas_height = this.props.height || window.innerHeight;
+		const canvas_width = this.props.width || window.innerWidth;
+
 		this.start_time = Date.now();
 
-		this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+		const aspect_ratio = canvas_width / canvas_height;
+		this.camera = new THREE.PerspectiveCamera(70, canvas_width / canvas_height, 1, 1000);
 		this.camera.position.z = 400;
 
 		this.scene = new THREE.Scene();
 
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setPixelRatio( window.devicePixelRatio );
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.setSize(canvas_width, canvas_height);
 
-		const geometry = new THREE.PlaneGeometry(1400, 1200, 10, 10);
-		const material = new THREE.MeshLambertMaterial({
-			color: "#47FFFF",
+		let geometry = new THREE.PlaneGeometry(1400, 1200, 30, 30);
+		if(aspect_ratio < 1.0)
+			geometry = new THREE.PlaneGeometry(1200, 1400, 30, 30);
+
+		//const color = Math.random() * 0xffffff;
+		const color = "#f4a460";
+		//const color = "#47FFFF";
+		console.log(color)
+		const material = new THREE.MeshPhongMaterial({
+			color: color,
+			shininess: 30,
+			specular: 0,
+			shading: THREE.FlatShading,
+			emissive: 50.0
 		});
 
 		const lights = [
-			new THREE.PointLight(0xfffffff, 1),
-			new THREE.PointLight (0xffffff, 1),
+			new THREE.PointLight(0xfffffff, 0.5),
+			//new THREE.PointLight (0xffffff, 1),
+			new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9)
 			//new THREE.PointLight (0xffffff, 1, 0)
 		];
 
 		lights[0].position.set(500, 0, 300);
-		lights[1].position.set(-800, 500, 200);
 		lights[0].castShadow = true;
-		lights[1].castShadow = true;
-		//lights[2].position.set(0, 0, 800);
+		lights[0].shadow.mapSize.width = 2048;
+		lights[0].shadow.mapSize.height = 2048;
 		lights.forEach(l => this.scene.add(l));
 
 		this.plane = new THREE.Mesh(geometry, material);
@@ -47,41 +62,27 @@ export default class Plane2 extends Component {
 	}
 
 	windowResize = () => {
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.camera.aspect = window.innerWidth / window.innerHeight;
+
+		const canvas_height = this.props.height || window.innerHeight;
+		const canvas_width = this.props.width || window.innerWidth;
+
+		this.renderer.setSize(canvas_width, canvas_height);
+		this.camera.aspect = canvas_width / canvas_height;
 		this.camera.updateProjectionMatrix();
 	}
 
 	animate = () => {
 		requestAnimationFrame(this.animate);
 
-		//this.plane.material.uniforms.time.value = Date.now() - this.start_time;
-		//console.log(this.plane.geometry.attributes.position)
-		
 		const t = Date.now() - this.start_time;
-		//console.log(this.plane.geometry.vertices)
 		for(let i = 0; i < this.plane.geometry.vertices.length; i++) {
 			const curr = this.plane.geometry.vertices[i];
-			this.plane.geometry.vertices[i].z = Math.sin(t / 1000.0 + curr.x + curr.y) * 100;
+			const x = curr.x / (1400/2);
+			const y = curr.y / (1200/2);
+			this.plane.geometry.vertices[i].z = Math.sin(t / 3500.0 - (2*x + y) * 2 * 3.1415) * 25 + Math.sin(t / 4000.0 - (y) * 2.5 * 3.1415) * 25;
 		}
 		this.plane.geometry.computeFaceNormals();
 		this.plane.geometry.verticesNeedUpdate = true;
-
-		/*
-		for(let i = 0; i < this.plane.geometry.attributes.position.array - 3; i += 3) {
-			const x = this.plane.geometry.attributes.position.array[i];
-			const y = this.plane.geometry.attributes.position.array[i + 1];
-			const z = this.plane.geometry.attributes.position.array[i + 2];
-
-			this.plane.geometry.attributes.position.array[i + 2] = Math.sin(t/100.0 + x * 2) * 100;
-
-		}
-
-		/*
-		this.plane.geometry.vertices = this.plane.geometry.vertices.map(x => {
-			console.log(x);
-			return x;
-		})*/
 
 		this.renderer.render(this.scene, this.camera);
 	}
