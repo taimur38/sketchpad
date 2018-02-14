@@ -5,11 +5,31 @@ import './style.css'
 import Plane from '../Plane2'
 
 export default class Main extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			height: window.innerHeight * .75,
+			width: window.innerWidth
+		};
+	}
+
+	componentDidMount() {
+		window.onresize = () => {
+			console.log('resize')
+			this.setState({
+				height: window.innerHeight * .75,
+				width: window.innerWidth
+			})
+		}
+	}
+
 	render() {
 		
+		console.log(this.state)
 		return <div className="main">
 			<div className='visual'>
-				<Plane height={window.innerHeight * .75} width={window.innerWidth * 1.2} />
+				<Plane height={this.state.height} width={this.state.width} />
 			</div>
 			<div className='heading'>
 				<div className='title'>Taimur Shah</div>

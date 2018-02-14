@@ -53,21 +53,26 @@ export default class Plane2 extends Component {
 
 		this.plane = new THREE.Mesh(geometry, material);
 		this.plane.position.z = 0;
+		this.plane.position.x = 0;
+		this.plane.position.y = 0;
 		this.scene.add(this.plane);
 
-		window.onresize = this.windowResize;
+		window.onresize = () => {
+			if(!this.props.height) {
+				this.renderer.setSize(canvas_width, canvas_height);
+				this.camera.aspect = canvas_width / canvas_height;
+				this.camera.updateProjectionMatrix();
+
+			}
+		}
 
 		document.querySelector("#container").appendChild(this.renderer.domElement);
 		this.animate();
 	}
 
-	windowResize = () => {
-
-		const canvas_height = this.props.height || window.innerHeight;
-		const canvas_width = this.props.width || window.innerWidth;
-
-		this.renderer.setSize(canvas_width, canvas_height);
-		this.camera.aspect = canvas_width / canvas_height;
+	componentWillReceiveProps(nextProps) {
+		this.renderer.setSize(nextProps.width, nextProps.height);
+		this.camera.aspect = nextProps.width / nextProps.height;
 		this.camera.updateProjectionMatrix();
 	}
 
@@ -85,6 +90,10 @@ export default class Plane2 extends Component {
 		this.plane.geometry.verticesNeedUpdate = true;
 
 		this.renderer.render(this.scene, this.camera);
+	}
+
+	componentWillUnmount() {
+		console.log('component unmount');
 	}
 
 	render() {
