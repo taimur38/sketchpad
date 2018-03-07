@@ -3,6 +3,8 @@
 import React, { Component } from 'react'
 import * as THREE from 'three'
 
+import { forceFullScreenOnTouch } from '../../helpers.js'
+
 export default class Plane2 extends Component {
 
 	componentDidMount() {
@@ -27,7 +29,8 @@ export default class Plane2 extends Component {
 			geometry = new THREE.PlaneGeometry(1200, 1400, 30, 30);
 
 		//const color = Math.random() * 0xffffff;
-		const color = "#f4a460";
+		const color = "#4793ff"
+		//const color = "#f4a460";
 		//const color = "#47FFFF";
 		console.log(color)
 		const material = new THREE.MeshPhongMaterial({
@@ -35,7 +38,6 @@ export default class Plane2 extends Component {
 			shininess: 30,
 			specular: 0,
 			shading: THREE.FlatShading,
-			emissive: 50.0
 		});
 
 		const lights = [
@@ -58,12 +60,15 @@ export default class Plane2 extends Component {
 		this.scene.add(this.plane);
 
 		window.onresize = () => {
-			if(!this.props.height) {
-				this.renderer.setSize(canvas_width, canvas_height);
-				this.camera.aspect = canvas_width / canvas_height;
+			if(this.props.height === undefined) {
+				this.renderer.setSize(window.innerWidth, window.innerHeight);
+				this.camera.aspect = window.innerWidth / window.innerHeight;
 				this.camera.updateProjectionMatrix();
-
 			}
+		}
+
+		if(this.props.height === undefined) {
+			forceFullScreenOnTouch();
 		}
 
 		document.querySelector("#container").appendChild(this.renderer.domElement);

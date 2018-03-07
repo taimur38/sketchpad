@@ -9,7 +9,7 @@ export default class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			height: window.innerHeight * .75,
+			height: window.innerHeight * .5,
 			width: window.innerWidth
 		};
 	}
@@ -18,7 +18,7 @@ export default class Main extends Component {
 		window.onresize = () => {
 			console.log('resize')
 			this.setState({
-				height: window.innerHeight * .75,
+				height: window.innerHeight * .5,
 				width: window.innerWidth
 			})
 		}
