@@ -13,14 +13,14 @@ import Main from './components/Main'
 const Routes = (props) => (
 	<BrowserRouter>
 		<Switch>
-			<Route exact path="/" component={App} />
+			<Route exact path="/" component={Main} />
 			<Route path="/cube" component={Cube} />
 			<Route path="/material" component={MaterialTest} />
 			<Route path="/metaball" component={MetaBalls} />
 			<Route path="/waves" component={Waves} />
 			<Route path="/plane" component={Plane} />
 			<Route path="/sphere" component={Sphere} />
-			<Route path="/main" component={Main} />
+			<Route path="/list" component={App} />
 		</Switch>
 	</BrowserRouter>
 )
