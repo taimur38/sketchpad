@@ -27,7 +27,7 @@
 }
 
 .main .title {
-	font-size: 6em;
+	font-size: 5em;
 	font-weight: bold;
 	text-align: center;
 	color: white;
@@ -55,7 +55,7 @@
 	background-color: rgba(0, 0, 0, 0.7);
 	clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 100%);
 	overflow: auto;
-	padding: 20px 0;
+	padding-top: 20px;
 }
 
 	.main .content a {
@@ -88,7 +88,7 @@
 }
 
 .main .about .liner {
-	padding: 40px 0;
+	padding-bottom: 40px;
 	line-height: 2rem;
 }
 

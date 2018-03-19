@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import * as THREE from 'three'
+import { forceFullScreenOnTouch } from '../../helpers.js'
 
 export default class Cube extends Component {
 
 	componentDidMount() {
+
+		forceFullScreenOnTouch();
 
 		this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 		this.camera.position.z = 400;

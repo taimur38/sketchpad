@@ -10,3 +10,10 @@ export const makeTexture = (img) => {
 
 	return tex;
 }
+
+export const forceFullScreenOnTouch = () => {
+	const e = document.getElementById("root");
+	const f = (e.requestFullscreen || e.webkitRequestFullscreen || e.mozRequestFullScreen || e.msRequestFullScreen).bind(e);
+	e.onclick = () => f();
+	e.ontouchstart = () => f();
+}

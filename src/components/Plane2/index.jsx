@@ -3,6 +3,8 @@
 import React, { Component } from 'react'
 import * as THREE from 'three'
 
+import { forceFullScreenOnTouch } from '../../helpers.js'
+
 export default class Plane2 extends Component {
 
 	componentDidMount() {
@@ -36,7 +38,6 @@ export default class Plane2 extends Component {
 			shininess: 20,
 			specular: 50,
 			shading: THREE.FlatShading,
-			emissive: 50.0
 		});
 
 		const lights = [
@@ -67,12 +68,15 @@ export default class Plane2 extends Component {
 		this.scene.add(this.plane);
 
 		window.onresize = () => {
-			if(!this.props.height) {
-				this.renderer.setSize(canvas_width, canvas_height);
-				this.camera.aspect = canvas_width / canvas_height;
+			if(this.props.height === undefined) {
+				this.renderer.setSize(window.innerWidth, window.innerHeight);
+				this.camera.aspect = window.innerWidth / window.innerHeight;
 				this.camera.updateProjectionMatrix();
-
 			}
+		}
+
+		if(this.props.height === undefined) {
+			forceFullScreenOnTouch();
 		}
 
 		document.querySelector("#container").appendChild(this.renderer.domElement);
