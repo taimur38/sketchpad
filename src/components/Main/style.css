@@ -85,6 +85,7 @@
 
 .main .about>div {
 	width: 75%;
+	max-width: 900px;
 }
 
 .main .about .liner {
