@@ -44,7 +44,7 @@ export default class Main extends Component {
 			</div>
 			<div className='about'>
 				<div className="liner">
-					<p>My background is in NLP, and I was previously a Software Architect at IBM Watson. Before that, I was VP of Engineering at <Out url="https://parrable.com">Parrable</Out> and cofounder of Clossit.</p>
+					<p>My background is in NLP, and I was previously a Software Architect at <Out url="https://www.ibm.com/watson/">Watson</Out>. Before that, I was VP of Engineering at <Out url="https://parrable.com">Parrable</Out> and cofounder of Clossit.</p>
 				</div>
 				<div className='interests'>
 					<div className="heading">Current Questions</div>
