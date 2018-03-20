@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import * as THREE from 'three'
 
-import { makeTexture } from '../../helpers'
+import { makeTexture, fullScreen } from '../../helpers'
 
 import matte_noise from './matte_noise.png'
 
-export default class MaterialTest extends Component {
+class MaterialTest extends Component {
 
 	componentDidMount() {
 
@@ -93,7 +93,10 @@ export default class MaterialTest extends Component {
 		this.renderer.render(this.scene, this.camera);
 	}
 
+
 	render() {
 		return <div id="container" style={{overflow: "hidden"}}/>
 	}
 }
+
+export default fullScreen(MaterialTest);

@@ -90,10 +90,16 @@
 
 .main .about .liner {
 	padding-bottom: 40px;
-	line-height: 2rem;
 }
+	.main .about .liner a {
+		color: white;
+		font-style: italic; 
+	}
 
-.main .about p {
+.main .footer {
+	background-color: rgba(0, 0, 0, 0.7);
+	padding: 50px 0;
+	width: 100%;
 }
 
 .main .heading {

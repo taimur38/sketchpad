@@ -4,11 +4,11 @@ import * as THREE from 'three'
 /* eslint import/no-webpack-loader-syntax: off */
 import planevert from '!raw-loader!./shaders/plane.vert'
 import planefrag from '!raw-loader!./shaders/plane.frag'
-import { forceFullScreenOnTouch } from '../../helpers.js'
+import { fullScreen } from '../../helpers.js'
 
 let ticks = 0;
 
-export default class MetaBalls extends Component {
+class MetaBalls extends Component {
 
 	constructor(props) {
 		super(props)
@@ -52,7 +52,6 @@ export default class MetaBalls extends Component {
 
 	componentDidMount() {
 
-		forceFullScreenOnTouch();
 		this.ws = new WebSocket("ws://192.168.0.15:8181/kinect");
 		this.ws.onmessage = this.on_msg;
 		this.ws.onopen = () => {
@@ -147,3 +146,5 @@ export default class MetaBalls extends Component {
 		return <div id="container" />
 	}
 }
+
+export default fullScreen(MetaBalls)

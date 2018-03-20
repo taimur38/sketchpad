@@ -3,8 +3,6 @@
 import React, { Component } from 'react'
 import * as THREE from 'three'
 
-import { forceFullScreenOnTouch } from '../../helpers.js'
-
 export default class Plane2 extends Component {
 
 	componentDidMount() {
@@ -28,16 +26,19 @@ export default class Plane2 extends Component {
 		if(aspect_ratio < 1.0)
 			geometry = new THREE.PlaneGeometry(1200, 1400, 30, 30);
 
+		//geometry = new THREE.SphereGeometry(300, 10, 10);
+		geometry = new THREE.DodecahedronGeometry(200, 3);
 		//const color = Math.random() * 0xffffff;
 		//const color = "#f4a460";
 		//const color = "#47FFFF";
-		const color = "#8f8f8f"
-		console.log(color)
+		//const color = "#8f8f8f"
+		const color = "#dddddd"
+
 		const material = new THREE.MeshPhongMaterial({
 			color: color,
-			shininess: 20,
+			shininess: 50,
 			specular: 50,
-			shading: THREE.FlatShading,
+			flatShading: true
 		});
 
 		const lights = [
@@ -73,10 +74,6 @@ export default class Plane2 extends Component {
 				this.camera.aspect = window.innerWidth / window.innerHeight;
 				this.camera.updateProjectionMatrix();
 			}
-		}
-
-		if(this.props.height === undefined) {
-			forceFullScreenOnTouch();
 		}
 
 		document.querySelector("#container").appendChild(this.renderer.domElement);

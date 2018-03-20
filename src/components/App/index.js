@@ -8,7 +8,6 @@ class App extends Component {
 			<div className="App">
 				<Link to="/metaball">Metaball</Link>
 				<Link to="/waves">Waves</Link>
-				<Link to="/plane">Plane</Link>
 				<Link to="/sphere">Sphere</Link>
 				<Link to="/material">Material</Link>
 				<Link to="/cube">Cube</Link>

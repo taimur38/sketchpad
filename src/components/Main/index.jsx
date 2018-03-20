@@ -43,15 +43,17 @@ export default class Main extends Component {
 				<Link to="/list">Sketches</Link>
 			</div>
 			<div className='about'>
-				<div className="liner">My goal is to build software that contributes positively to the world. <br />
-				My background is in NLP, and I was previously a Software Architect at IBM Watson.</div>
+				<div className="liner">
+					<p>My background is in NLP, and I was previously a Software Architect at IBM Watson. Before that, I was VP of Engineering at <Out url="https://parrable.com">Parrable</Out> and cofounder of Clossit.</p>
+				</div>
 				<div className='interests'>
-					<div className="heading">Current Interests</div>
-					<p>How can Chatbots, AI, and data visualization improve conversations between people?</p> 
-					<p>How can software accelerate development in developing countries?</p>
-					<p>How can decentralized solutions augment untrusted institutions?</p>
+					<div className="heading">Current Questions</div>
+					<p>How can Chatbots, AI, and data visualization improve human communication?</p> 
+					<p>How can software address systemic issues in developing countries?</p>
+					<p>Can decentralized solutions legitamize previously untrustworthy institutions?</p>
 				</div>
 			</div>
+			<div className='footer' />
 		</div>
 
 	}

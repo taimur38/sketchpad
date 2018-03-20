@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import * as THREE from 'three'
-import { forceFullScreenOnTouch } from '../../helpers.js'
+import { fullScreen } from '../../helpers.js'
 
-export default class Cube extends Component {
+class Cube extends Component {
 
 	componentDidMount() {
-
-		forceFullScreenOnTouch();
 
 		this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 		this.camera.position.z = 400;
@@ -15,8 +13,9 @@ export default class Cube extends Component {
 
 		const geometry = new THREE.BoxBufferGeometry(200, 200, 200);
 		const material = new THREE.MeshBasicMaterial({
-			color: Math.random() * 0xffffff 
+			color: Math.random() * 0xffffff
 		});
+
 
 		this.mesh = new THREE.Mesh( geometry, material );
 		this.scene.add(this.mesh);
@@ -51,3 +50,5 @@ export default class Cube extends Component {
 		return <div id="container" />
 	}
 }
+
+export default fullScreen(Cube);

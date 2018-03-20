@@ -4,13 +4,11 @@ import React, { Component } from 'react'
 import * as THREE from 'three'
 import planevert from '!raw-loader!./shaders/plane.vert'
 import planefrag from '!raw-loader!./shaders/plane.frag'
-import { forceFullScreenOnTouch } from '../../helpers.js'
+import { fullScreen } from '../../helpers.js'
 
-export default class Waves extends Component {
+class Waves extends Component {
 
 	componentDidMount() {
-
-		forceFullScreenOnTouch();
 
 		this.start_time = Date.now();
 
@@ -67,3 +65,5 @@ export default class Waves extends Component {
 		return <div id="container" />
 	}
 }
+
+export default fullScreen(Waves);
