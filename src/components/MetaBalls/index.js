@@ -52,6 +52,7 @@ class MetaBalls extends Component {
 
 	componentDidMount() {
 
+		/*
 		this.ws = new WebSocket("ws://192.168.0.15:8181/kinect");
 		this.ws.onmessage = this.on_msg;
 		this.ws.onopen = () => {
@@ -65,6 +66,7 @@ class MetaBalls extends Component {
 				kinect: false 
 			})
 		}
+		*/
 
 		this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 		this.camera.position.z = 400;
