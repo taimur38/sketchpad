@@ -90,7 +90,7 @@ void main () {
 			meta_score = 0.0;
 		}
 		else {
-			meta_score =  rounded * rounded * rounded;
+			meta_score =  rounded;
 		}
 
 		// redistribute meta_score so it's more extreme.
@@ -99,5 +99,9 @@ void main () {
 
 	}
 
-	gl_FragColor = vec4(meta_score, meta_score, meta_score, 1.0); 
+	float r = 0.99;
+	float g = 0.80;
+	float b = 0.2055;
+
+	gl_FragColor = vec4(meta_score * r, meta_score * g, meta_score * b, 1.0); 
 }
