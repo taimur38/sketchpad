@@ -44,18 +44,22 @@ export default class Main extends Component {
         <div className="about">
           <div className="liner">
             <p>
-              I am a Development Economist with a background in Computer
-              Science. I am interested in evidence-based and theoretically
-              grounded analysis of economic phenomena to inform entrepreneurial
-              action. <br /> <br /> I am currently obtaining my{" "}
+              I am a Development Economist with a background in Computer Science
+              and entrepreneurship. I have started organizations in both New
+              York City and Lahore, and developed deep product expertise by
+              working on a wide range of products across many contexts. I am
+              currently focused on connecting insights from Growth Diagnostics
+              and Economic Complexity to issues in Pakistan, and identifying
+              opportunities for entrepreneurial action. <br /> <br /> I am
+              currently obtaining my{" "}
               <Out url="https://www.hks.harvard.edu/educational-programs/masters-programs/master-public-administration-international-development">
                 Masters in Public Administration in International Development
                 from Harvard Kennedy School
               </Out>
-              , where I have developed my interests in Economic Complexity,
-              Growth Diagnostics and Macro-Development. <br /> <br /> Prior to
-              coming the program, I started the Labs unit at the Centre for
-              Economic Research in Pakistan.{" "}
+              , where I have developed interests in Economic Complexity, Growth
+              Diagnostics and Macro-Development. <br /> <br /> Prior to coming
+              the program, I started the Labs unit at the Centre for Economic
+              Research in Pakistan.{" "}
               <Out url="https://labs.cerp.org.pk/">CERP Labs</Out> is a
               revenue-generating software house situated within an economic
               research institution, which builds products informed by learning
@@ -76,6 +80,10 @@ export default class Main extends Component {
           </div>
           <div className="interests">
             <div className="heading">Current Questions</div>
+            <p>
+              What is the binding constraint to Agriculture productivity in
+              Pakistan?
+            </p>
             <p>
               How can Chatbots, AI, and data visualization improve human
               communication?
