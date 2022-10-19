@@ -45,21 +45,36 @@ export default class Main extends Component {
           <div className="liner">
             <p>
               I am a Development Economist with a background in Computer Science
-              and entrepreneurship. I have started organizations in both New
-              York City and Lahore, and developed deep product expertise by
-              working on a wide range of products across many contexts. I am
-              currently focused on connecting insights from Growth Diagnostics
-              and Economic Complexity to issues in Pakistan, and identifying
-              opportunities for entrepreneurial action. <br /> <br /> I am
-              currently obtaining my{" "}
+              and entrepreneurship. <br />
+              <br /> I have started organizations in both New York City and
+              Lahore, and developed deep product expertise by working on a wide
+              range of products across many contexts. I am currently focused on
+              connecting insights from{" "}
+              <Out url="https://growthlab.cid.harvard.edu/files/growthlab/files/growth-diagnostics.pdf">
+                Growth Diagnostics
+              </Out>{" "}
+              and{" "}
+              <Out url="https://www.science.org/doi/10.1126/science.1144581">
+                Economic Complexity
+              </Out>{" "}
+              to issues in Pakistan in order to identify both policy and
+              entrepreneurial opportunities. <br /> <br /> I am currently
+              obtaining my{" "}
               <Out url="https://www.hks.harvard.edu/educational-programs/masters-programs/master-public-administration-international-development">
                 Masters in Public Administration in International Development
                 from Harvard Kennedy School
               </Out>
               , where I have developed interests in Economic Complexity, Growth
-              Diagnostics and Macro-Development. <br /> <br /> Prior to coming
-              the program, I started the Labs unit at the Centre for Economic
-              Research in Pakistan.{" "}
+              Diagnostics and Macro-Development. In the summer break during the
+              program, I developed policy solutions for the{" "}
+              <Out url="https://www.gov.kz/memleket/entities/aspr?lang=en">
+                Agency for Strategic Planning and Reforms of the Republic of
+                Kazakhstan
+              </Out>
+              , in the fields of Industrial Policy, Pension reform, Fiscal
+              policy, data management and reform monitoring. <br /> <br /> Prior
+              to coming the program, I started the Labs unit at the Centre for
+              Economic Research in Pakistan.{" "}
               <Out url="https://labs.cerp.org.pk/">CERP Labs</Out> is a
               revenue-generating software house situated within an economic
               research institution, which builds products informed by learning
