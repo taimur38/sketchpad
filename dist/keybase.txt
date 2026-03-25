@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/taimur38
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://metal.fish
+  * I am taimur38 (https://keybase.io/taimur38) on keybase.
+  * I have a public key ASCoUeNvOlK3QCgNQu7dRx7Lp2XHUcIpuK5uae1jXho-RQo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120a851e36f3a52b740280d42eedd471ecba765c751c229b8ae6e69ed635e1a3e450a",
+      "host": "keybase.io",
+      "kid": "0120a851e36f3a52b740280d42eedd471ecba765c751c229b8ae6e69ed635e1a3e450a",
+      "uid": "5134de2d87e15196a756939ee7e1a119",
+      "username": "taimur38"
+    },
+    "merkle_root": {
+      "ctime": 1505793080,
+      "hash": "b5106077b6aaf6b449bb63049d637d25f69315bf22d71d5d839689ec5a7e3c757ffdbc5044227c6ff36ee7a3e41bb1625b3f5373a8f76ad31fd82c54aaeab91e",
+      "hash_meta": "f8fafec76fece921acae4230c8f69cddd1bbaf3337b88c0b971535a93f612a53",
+      "seqno": 1405813
+    },
+    "service": {
+      "hostname": "metal.fish",
+      "protocol": "http:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.31"
+  },
+  "ctime": 1505793125,
+  "expire_in": 504576000,
+  "prev": "1ab00ca97150c90b472990f9d4e2a2115d7b175482ac9acf039546a8e7f6c1ef",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgqFHjbzpSt0AoDULu3Ucey6dlx1HCKbiubmntY14aPkUKp3BheWxvYWTFA0F7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwYTg1MWUzNmYzYTUyYjc0MDI4MGQ0MmVlZGQ0NzFlY2JhNzY1Yzc1MWMyMjliOGFlNmU2OWVkNjM1ZTFhM2U0NTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwYTg1MWUzNmYzYTUyYjc0MDI4MGQ0MmVlZGQ0NzFlY2JhNzY1Yzc1MWMyMjliOGFlNmU2OWVkNjM1ZTFhM2U0NTBhIiwidWlkIjoiNTEzNGRlMmQ4N2UxNTE5NmE3NTY5MzllZTdlMWExMTkiLCJ1c2VybmFtZSI6InRhaW11cjM4In0sIm1lcmtsZV9yb290Ijp7ImN0aW1lIjoxNTA1NzkzMDgwLCJoYXNoIjoiYjUxMDYwNzdiNmFhZjZiNDQ5YmI2MzA0OWQ2MzdkMjVmNjkzMTViZjIyZDcxZDVkODM5Njg5ZWM1YTdlM2M3NTdmZmRiYzUwNDQyMjdjNmZmMzZlZTdhM2U0MWJiMTYyNWIzZjUzNzNhOGY3NmFkMzFmZDgyYzU0YWFlYWI5MWUiLCJoYXNoX21ldGEiOiJmOGZhZmVjNzZmZWNlOTIxYWNhZTQyMzBjOGY2OWNkZGQxYmJhZjMzMzdiODhjMGI5NzE1MzVhOTNmNjEyYTUzIiwic2Vxbm8iOjE0MDU4MTN9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoibWV0YWwuZmlzaCIsInByb3RvY29sIjoiaHR0cDoifSwidHlwZSI6IndlYl9zZXJ2aWNlX2JpbmRpbmciLCJ2ZXJzaW9uIjoxfSwiY2xpZW50Ijp7Im5hbWUiOiJrZXliYXNlLmlvIGdvIGNsaWVudCIsInZlcnNpb24iOiIxLjAuMzEifSwiY3RpbWUiOjE1MDU3OTMxMjUsImV4cGlyZV9pbiI6NTA0NTc2MDAwLCJwcmV2IjoiMWFiMDBjYTk3MTUwYzkwYjQ3Mjk5MGY5ZDRlMmEyMTE1ZDdiMTc1NDgyYWM5YWNmMDM5NTQ2YThlN2Y2YzFlZiIsInNlcW5vIjo4LCJ0YWciOiJzaWduYXR1cmUifaNzaWfEQBQnGI8Qq4uhFh94g80u2N5E7OJSpjNj0cKpVlYijPS6TJJWWLv5NR5Mf6zwgtt/RcwwjrFA1kDYCIcm5Z/Nuwyoc2lnX3R5cGUgpGhhc2iCpHR5cGUIpXZhbHVlxCB5MxGpBFpOPUVPuq6gwSeVkgr2SNF+mUNnLcxCS+v4JKN0YWfNAgKndmVyc2lvbgE=
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/taimur38
+
+==================================================================

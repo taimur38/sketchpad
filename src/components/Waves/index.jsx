@@ -1,69 +1,58 @@
-/* eslint import/no-webpack-loader-syntax: off */
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import planevert from './shaders/plane.vert?raw';
+import planefrag from './shaders/plane.frag?raw';
 
-import React, { Component } from 'react'
-import * as THREE from 'three'
-import planevert from '!raw-loader!./shaders/plane.vert'
-import planefrag from '!raw-loader!./shaders/plane.frag'
-import { fullScreen } from '../../helpers.js'
+export default function Waves() {
+  const containerRef = useRef(null);
 
-class Waves extends Component {
+  useEffect(() => {
+    const start_time = Date.now();
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.z = 400;
 
-	componentDidMount() {
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-		this.start_time = Date.now();
+    const geometry = new THREE.PlaneGeometry(1400, 1200, 10, 10);
+    const material = new THREE.ShaderMaterial({
+      vertexShader: planevert,
+      fragmentShader: planefrag,
+      uniforms: {
+        time: { value: 0 },
+        color1: { value: new THREE.Color('#6E2264') },
+        color2: { value: new THREE.Color('#CC4D33') },
+      },
+    });
 
-		this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
-		this.camera.position.z = 400;
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
-		this.scene = new THREE.Scene();
+    const onResize = () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    };
+    window.addEventListener('resize', onResize);
 
-		this.renderer = new THREE.WebGLRenderer();
-		this.renderer.setPixelRatio( window.devicePixelRatio );
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
+    containerRef.current.appendChild(renderer.domElement);
 
-		const geometry = new THREE.PlaneBufferGeometry(1400, 1200, 10, 10);
-		const material = new THREE.ShaderMaterial({
-			vertexShader: planevert,
-			fragmentShader: planefrag,
-			uniforms: {
-				time: {
-					value: Date.now()
-				},
-				color1: {
-					value: new THREE.Color("#6E2264")
-				},
-				color2: {
-					value: new THREE.Color("#CC4D33")
-				}
-			}
-		})
+    let animId;
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+      material.uniforms.time.value = Date.now() - start_time;
+      renderer.render(scene, camera);
+    };
+    animate();
 
-		this.plane = new THREE.Mesh(geometry, material);
-		this.scene.add(this.plane)
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', onResize);
+      renderer.dispose();
+    };
+  }, []);
 
-		window.onresize = this.windowResize;
-
-		document.querySelector("#container").appendChild(this.renderer.domElement);
-		this.animate();
-	}
-
-	windowResize = () => {
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.camera.aspect = window.innerWidth / window.innerHeight;
-		this.camera.updateProjectionMatrix();
-	}
-
-	animate = () => {
-		requestAnimationFrame(this.animate);
-
-		this.plane.material.uniforms.time.value = Date.now() - this.start_time;
-
-		this.renderer.render(this.scene, this.camera);
-	}
-
-	render() {
-		return <div id="container" />
-	}
+  return <div ref={containerRef} />;
 }
-
-export default fullScreen(Waves);

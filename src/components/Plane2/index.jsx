@@ -1,120 +1,105 @@
-/* eslint import/no-webpack-loader-syntax: off */
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
-import React, { Component } from "react";
-import * as THREE from "three";
+export default function Plane2({ height, width }) {
+  const containerRef = useRef(null);
+  const stateRef = useRef(null);
 
-export default class Plane2 extends Component {
-  componentDidMount() {
-    const canvas_height = this.props.height || window.innerHeight;
-    const canvas_width = this.props.width || window.innerWidth;
+  useEffect(() => {
+    const canvas_height = height || window.innerHeight;
+    const canvas_width = width || window.innerWidth;
+    const start_time = Date.now();
 
-    this.start_time = Date.now();
+    const camera = new THREE.PerspectiveCamera(70, canvas_width / canvas_height, 1, 1000);
+    camera.position.z = 400;
 
-    const aspect_ratio = canvas_width / canvas_height;
-    this.camera = new THREE.PerspectiveCamera(
-      70,
-      canvas_width / canvas_height,
-      1,
-      1000
-    );
-    this.camera.position.z = 400;
+    const scene = new THREE.Scene();
 
-    this.scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(canvas_width, canvas_height);
+    renderer.setClearColor(0xfafafa, 0);
 
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(canvas_width, canvas_height);
-    this.renderer.setClearColor(0xfafafa, 0);
-
-    let geometry = new THREE.PlaneGeometry(1400, 1200, 30, 30);
-    if (aspect_ratio < 1.0)
-      geometry = new THREE.PlaneGeometry(1200, 1400, 30, 30);
-
-    //geometry = new THREE.SphereGeometry(300, 10, 10);
-    geometry = new THREE.DodecahedronGeometry(200, 3);
-    //const color = Math.random() * 0xffffff;
-    //const color = "#f4a460";
-    //const color = "#47FFFF";
-    //const color = "#8f8f8f"
-    const color = "#dddddd";
+    const geometry = new THREE.DodecahedronGeometry(200, 3);
+    const color = '#dddddd';
 
     const material = new THREE.MeshPhongMaterial({
-      color: color,
+      color,
       shininess: 50,
       specular: 50,
       flatShading: true,
     });
 
     const lights = [
-      //new THREE.PointLight(0xfffffff, 0.5),
       new THREE.PointLight(0x6e22f4, 0.7),
       new THREE.PointLight(0xcc4d33, 0.9),
-      //new THREE.PointLight (0xffffff, 1),
       new THREE.HemisphereLight(0xffffff, 0x000000, 0.9),
-      //new THREE.PointLight (0xffffff, 1, 0)
     ];
 
     lights[0].position.set(500, 0, 300);
     lights[0].castShadow = true;
-    lights[0].shadow.mapSize.width = 2048;
-    lights[0].shadow.mapSize.height = 2048;
-
     lights[1].position.set(-500, 0, 300);
     lights[1].castShadow = true;
-    lights[1].shadow.mapSize.width = 2048;
-    lights[1].shadow.mapSize.height = 2048;
 
-    lights.forEach((l) => this.scene.add(l));
+    lights.forEach((l) => scene.add(l));
 
-    this.plane = new THREE.Mesh(geometry, material);
-    this.plane.position.z = 0;
-    this.plane.position.x = 0;
-    this.plane.position.y = 0;
-    this.scene.add(this.plane);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
-    window.onresize = () => {
-      if (this.props.height === undefined) {
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
+    // Store original positions for animation
+    const posAttr = geometry.getAttribute('position');
+    const originalPositions = new Float32Array(posAttr.array);
+
+    containerRef.current.appendChild(renderer.domElement);
+
+    let animId;
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+      const t = (Date.now() - start_time) / 400;
+
+      for (let i = 0; i < posAttr.count; i++) {
+        const ox = originalPositions[i * 3];
+        const oy = originalPositions[i * 3 + 1];
+        const oz = originalPositions[i * 3 + 2];
+        const x = ox / 200;
+        const y = oy / 200;
+        const displacement = Math.sin(t / 3.5 - (2 * x + y) * 2 * Math.PI) * 25 +
+                            Math.sin(t / 4.0 - y * 2.5 * Math.PI) * 25;
+        // Apply displacement along the vertex normal direction (radial for dodecahedron)
+        const len = Math.sqrt(ox * ox + oy * oy + oz * oz) || 1;
+        posAttr.setXYZ(i,
+          ox + (ox / len) * displacement * 0.1,
+          oy + (oy / len) * displacement * 0.1,
+          oz + (oz / len) * displacement * 0.1
+        );
       }
+      posAttr.needsUpdate = true;
+      geometry.computeVertexNormals();
+
+      renderer.render(scene, camera);
     };
+    animate();
 
-    document.querySelector("#container").appendChild(this.renderer.domElement);
+    stateRef.current = { renderer, camera, animId };
 
-    this.animate();
-  }
+    return () => {
+      cancelAnimationFrame(animId);
+      renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+    };
+  }, []);
 
-  componentWillReceiveProps(nextProps) {
-    this.renderer.setSize(nextProps.width, nextProps.height);
-    this.camera.aspect = nextProps.width / nextProps.height;
-    this.camera.updateProjectionMatrix();
-  }
+  // Handle resize
+  useEffect(() => {
+    if (!stateRef.current) return;
+    const { renderer, camera } = stateRef.current;
+    const w = width || window.innerWidth;
+    const h = height || window.innerHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }, [width, height]);
 
-  animate = () => {
-    requestAnimationFrame(this.animate);
-
-    const t = (Date.now() - this.start_time) / 400;
-
-    for (let i = 0; i < this.plane.geometry.vertices.length; i++) {
-      const curr = this.plane.geometry.vertices[i];
-      const x = curr.x / (1400 / 2);
-      const y = curr.y / (1200 / 2);
-      this.plane.geometry.vertices[i].z =
-        Math.sin(t / 3.5 - (2 * x + y) * 2 * 3.1415) * 25 +
-        Math.sin(t / 4.0 - y * 2.5 * 3.1415) * 25;
-    }
-    this.plane.geometry.computeFaceNormals();
-    this.plane.geometry.verticesNeedUpdate = true;
-
-    this.renderer.render(this.scene, this.camera);
-  };
-
-  componentWillUnmount() {
-    console.log("component unmount");
-  }
-
-  render() {
-    return <div id="container" />;
-  }
+  return <div ref={containerRef} />;
 }

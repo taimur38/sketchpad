@@ -1,0 +1,1 @@
+import{j as e,L as s}from"./index-4-V2hwTY.js";function r(){return e.jsxs("div",{className:"App",children:[e.jsx(s,{to:"/metaball",children:"Metaball"}),e.jsx(s,{to:"/waves",children:"Waves"}),e.jsx(s,{to:"/sphere",children:"Sphere"}),e.jsx(s,{to:"/material",children:"Material"}),e.jsx(s,{to:"/cube",children:"Cube"})]})}export{r as default};

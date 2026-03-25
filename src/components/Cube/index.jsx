@@ -1,35 +1,22 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import planevert from './shaders/plane.vert?raw';
-import planefrag from './shaders/plane.frag?raw';
 
-export default function Sphere() {
+export default function Cube() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const start_time = Date.now();
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.z = 800;
+    camera.position.z = 400;
 
     const scene = new THREE.Scene();
+    const geometry = new THREE.BoxGeometry(200, 200, 200);
+    const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
     const renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const geometry = new THREE.SphereGeometry(700, 100, 100);
-    const material = new THREE.ShaderMaterial({
-      vertexShader: planevert,
-      wireframe: true,
-      fragmentShader: planefrag,
-      uniforms: {
-        time: { value: 0 },
-        color1: { value: new THREE.Color('#6E2264') },
-        color2: { value: new THREE.Color('#CC4D33') },
-      },
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
 
     const onResize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -43,7 +30,8 @@ export default function Sphere() {
     let animId;
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      material.uniforms.time.value = Date.now() - start_time;
+      mesh.rotation.x += 0.005;
+      mesh.rotation.y += 0.01;
       renderer.render(scene, camera);
     };
     animate();
