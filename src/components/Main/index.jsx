@@ -25,12 +25,13 @@ export default function Main() {
         <div className="title">Taimur Shah</div>
       </div>
       <div className="content">
-        <Out url="https://github.com/taimur38">GitHub</Out>
-        <Out url="https://keybase.pub/taimur38/Resume.pdf">Resume</Out>
-        <Out url="https://medium.com/@taimur38">Blog</Out>
-        <Out url="https://twitter.com/taimur38">Twitter</Out>
-        <Out url="https://www.instagram.com/taimur38">Instagram</Out>
-        <Link to="/list">Sketches</Link>
+        <Link to="/list" className="nav-primary">Sketches</Link>
+        <Link to="/resume" className="nav-primary">Resume</Link>
+        <Out url="https://github.com/taimur38" className="nav-secondary">GitHub</Out>
+        <span className="nav-sep">&middot;</span>
+        <Out url="https://medium.com/@taimur38" className="nav-tertiary">Blog</Out>
+        <Out url="https://twitter.com/taimur38" className="nav-tertiary">Twitter</Out>
+        <Out url="https://www.instagram.com/taimur38" className="nav-tertiary">Instagram</Out>
       </div>
       <div className="about">
         <div className="liner">
@@ -108,8 +109,8 @@ export default function Main() {
   );
 }
 
-const Out = ({ url, children }) => (
-  <a href={url} target="_blank" rel="noopener noreferrer">
+const Out = ({ url, children, className }) => (
+  <a href={url} target="_blank" rel="noopener noreferrer" className={className}>
     {children}
   </a>
 );

@@ -7,6 +7,7 @@ import Main from './components/Main';
 
 // Lazy load sketch pages — they pull in Three.js which is heavy
 const App = lazy(() => import('./components/App'));
+const Resume = lazy(() => import('./components/Resume'));
 const Cube = lazy(() => import('./components/Cube'));
 const MaterialTest = lazy(() => import('./components/MaterialTest'));
 const MetaBalls = lazy(() => import('./components/MetaBalls'));
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/resume" element={<Resume />} />
           <Route path="/cube" element={<Cube />} />
           <Route path="/material" element={<MaterialTest />} />
           <Route path="/metaball" element={<MetaBalls />} />
