@@ -25,13 +25,16 @@ export default function Main() {
         <div className="title">Taimur Shah</div>
       </div>
       <div className="content">
-        <Link to="/list" className="nav-primary">Sketches</Link>
-        <Link to="/resume" className="nav-primary">Resume</Link>
-        <Out url="https://github.com/taimur38" className="nav-secondary">GitHub</Out>
-        <span className="nav-sep">&middot;</span>
-        <Out url="https://medium.com/@taimur38" className="nav-tertiary">Blog</Out>
-        <Out url="https://twitter.com/taimur38" className="nav-tertiary">Twitter</Out>
-        <Out url="https://www.instagram.com/taimur38" className="nav-tertiary">Instagram</Out>
+        <Link to="/list" className="nav-hero">Sketches</Link>
+        <div className="nav-row">
+          <Link to="/resume">Resume</Link>
+          <Out url="https://github.com/taimur38">GitHub</Out>
+        </div>
+        <div className="nav-social">
+          <Out url="https://medium.com/@taimur38">Blog</Out>
+          <Out url="https://twitter.com/taimur38">Twitter</Out>
+          <Out url="https://www.instagram.com/taimur38">Instagram</Out>
+        </div>
       </div>
       <div className="about">
         <div className="liner">
