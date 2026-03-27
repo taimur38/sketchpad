@@ -12,10 +12,6 @@ export default function Resume() {
 
       <div className="resume-card">
         <h1>Taimur Shah</h1>
-        <div className="contact-info">
-          11 Tannery Brook Row, Somerville, MA 02144<br />
-          <a href="mailto:taimur_shah@hks.harvard.edu">taimur_shah@hks.harvard.edu</a> &middot; (609) 721-2040
-        </div>
 
         {/* ── Summary ── */}
         <h2>Professional Summary</h2>
