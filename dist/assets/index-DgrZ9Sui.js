@@ -1,4 +1,4 @@
-import{r as l,j as h}from"./index-B_4vh52Z.js";import{P as d,S as u,W as v,g,f as w,C as m,a as x}from"./three.module-ICs-E19M.js";const _=`/* these are already supplied ...
+import{r as s,j as p}from"./index-B9j_3tUA.js";import{P as u,S as v,W as h,e as g,f as w,C as m,a as x}from"./three.module-ICs-E19M.js";const _=`/* these are already supplied ...
 uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
@@ -17,11 +17,7 @@ varying vec3 _normal;
 
 float toy(float x) {
 
-	//float height = sin(x/1000.0) / (position.x * position.y + 0.1);
-	float mx = position.x;
-	float my = position.y - 0.5;
-	float height = 100.0 * sin(x/1000.0 - (mx*mx + my*my)/10000.0);
-	//float height = sin((position.x * position.x + position.y + (x/ 10.0))/ 100.0) * 50.0;
+	float height = sin((position.x * position.x + position.y + (x/ 10.0))/ 100.0) * 50.0;
 	return height;
 
 }
@@ -33,8 +29,8 @@ float simple(float x) {
 
 void main() {
 
-	float height = toy(time);
-	float future_height = toy(time + 1000.0/60.0);
+	float height = simple(time);
+	float future_height = simple(time + 1000.0/60.0);
 	/*
 	float height = sin((position.x * position.x + position.y + (time / 10.0))/ 100.0) * 50.0;
 
@@ -77,4 +73,4 @@ void main () {
 	//gl_FragColor = vec4(col, .7 * col, .2 * col, 1.0);
 
 	//gl_FragColor = vec4(normalize(_normal), 1.0);
-}`;function S(){const e=l.useRef(null);return l.useEffect(()=>{const c=Date.now(),t=new d(70,window.innerWidth/window.innerHeight,1,1e3);t.position.z=800;const o=new u,n=new v;n.setPixelRatio(window.devicePixelRatio),n.setSize(window.innerWidth,window.innerHeight);const f=new g(700,100,100),i=new w({vertexShader:_,wireframe:!0,fragmentShader:y,uniforms:{time:{value:0},color1:{value:new m("#6E2264")},color2:{value:new m("#CC4D33")}}}),p=new x(f,i);o.add(p);const r=()=>{n.setSize(window.innerWidth,window.innerHeight),t.aspect=window.innerWidth/window.innerHeight,t.updateProjectionMatrix()};window.addEventListener("resize",r),e.current.appendChild(n.domElement);let a;const s=()=>{a=requestAnimationFrame(s),i.uniforms.time.value=Date.now()-c,n.render(o,t)};return s(),()=>{cancelAnimationFrame(a),window.removeEventListener("resize",r),n.dispose()}},[]),h.jsx("div",{ref:e})}export{S as default};
+}`;function z(){const e=s.useRef(null);return s.useEffect(()=>{const c=Date.now(),t=new u(70,window.innerWidth/window.innerHeight,1,1e3);t.position.z=400;const i=new v,n=new h;n.setPixelRatio(window.devicePixelRatio),n.setSize(window.innerWidth,window.innerHeight);const d=new g(1400,1200,10,10),o=new w({vertexShader:_,fragmentShader:y,uniforms:{time:{value:0},color1:{value:new m("#6E2264")},color2:{value:new m("#CC4D33")}}}),f=new x(d,o);i.add(f);const r=()=>{n.setSize(window.innerWidth,window.innerHeight),t.aspect=window.innerWidth/window.innerHeight,t.updateProjectionMatrix()};window.addEventListener("resize",r),e.current.appendChild(n.domElement);let a;const l=()=>{a=requestAnimationFrame(l),o.uniforms.time.value=Date.now()-c,n.render(i,t)};return l(),()=>{cancelAnimationFrame(a),window.removeEventListener("resize",r),n.dispose()}},[]),p.jsx("div",{ref:e})}export{z as default};

@@ -25,15 +25,15 @@ export default function Main() {
         <div className="title">Taimur Shah</div>
       </div>
       <div className="content">
-        <Link to="/list" className="nav-hero">Sketches</Link>
-        <div className="nav-row">
+        <div className="nav-primary">
           <Link to="/resume">Resume</Link>
           <Out url="https://github.com/taimur38">GitHub</Out>
-        </div>
-        <div className="nav-social">
           <Out url="https://medium.com/@taimur38">Blog</Out>
           <Out url="https://twitter.com/taimur38">Twitter</Out>
           <Out url="https://www.instagram.com/taimur38">Instagram</Out>
+        </div>
+        <div className="nav-secondary">
+          <Link to="/list">Sketches</Link>
         </div>
       </div>
       <div className="about">
