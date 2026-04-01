@@ -39,8 +39,11 @@ export default function Main() {
       <div className="about">
         <div className="liner">
           <p>
-            I am a Development Economist with a background in Computer Science
-            and entrepreneurship. <br /><br />
+            I research why countries stay poor, and design policies and products
+            to change it. My research focus is on agriculture and cities, using
+            growth diagnostics and economic complexity. I'm also CTO of{' '}
+            <Out url="https://beaj.org">Beaj</Out>, which uses WhatsApp to
+            teach underserved populations. <br /><br />
             I have started organizations in both New York City and Lahore, and
             developed deep product expertise by working on a wide range of
             products across many contexts. I am currently focused on connecting

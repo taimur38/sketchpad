@@ -3,6 +3,7 @@
   width: 100%;
   font-family: var(--font-body);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .main .visual {
@@ -66,21 +67,7 @@
   color: var(--color-text-secondary);
 }
 
-/* Secondary row — Sketches */
-.main .content .nav-secondary {
-  margin-top: var(--space-xs);
-}
-.main .content .nav-secondary a {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-.main .content .nav-secondary a:hover {
-  color: var(--color-text);
-}
+
 
 /* ── About ── */
 
